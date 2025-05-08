@@ -1,174 +1,135 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Fail oder Power Rangers Monster?</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Fail oder Power Rangers Monster?</title>
   <style>
+    /* Grundlayout */
     body {
+      margin: 0; padding: 0;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; background: #000; overflow: hidden;
       font-family: system-ui, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: #000;
-      margin: 0;
-      overflow-x: hidden;
     }
-    /* === ASCII Background === */
+    /* ASCII-Wellen-Background */
     #ascii-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 200%; /* doppelte Höhe für Scroll‑Effekt */
-      white-space: pre;
-      font-family: monospace;
-      font-size: 8px;
-      line-height: 8px;
-      color: #333;
-      opacity: 0.15;
-      pointer-events: none;
-      animation: scroll 30s linear infinite;
-      z-index: 0;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      white-space: pre; font-family: monospace;
+      font-size: 8px; line-height: 8px;
+      color: #fff; opacity: 0.1;
+      pointer-events: none; z-index: 0;
     }
-    @keyframes scroll {
-      0%   { transform: translateY(0); }
-      100% { transform: translateY(-50%); }
-    }
-    /* === Quiz‑Card === */
+    /* Quiz-Container */
     #quiz-container {
-      position: relative;
-      z-index: 1;
-      background: #ffffffcc; /* leicht transparentes Weiß */
-      backdrop-filter: blur(4px);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      width: 320px;
+      position: relative; z-index: 1;
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(4px);
+      padding: 2rem; border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      text-align: center; width: 320px;
     }
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
+    #quiz-container img {
+      max-width: 100%; height: auto;
+      border-radius: 0.5rem; margin: 0 auto 1rem;
+      display: block;
     }
     button {
-      padding: 0.8rem 1.2rem;
-      font-size: 1rem;
-      margin: 0.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 0.8rem 1.2rem; margin: 0.5rem;
+      font-size: 1rem; border: none; border-radius: 0.5rem;
+      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background: #007bff; color: #fff;
       transition: transform 0.15s;
     }
-    button:hover {
-      transform: translateY(-2px);
-    }
-    #result {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-    }
+    button:hover { transform: translateY(-2px); }
+    #result { font-size: 1.2rem; margin-top: 1rem; }
   </style>
 </head>
 <body>
   <pre id="ascii-bg"></pre>
-
   <div id="quiz-container">
-    <h1>AI Fail oder Power Rangers Monster?</h1>
+    <h1>AI Fail oder Power Rangers Monster?</h1>
     <div id="score">Punktzahl: <span id="score-value">0</span></div>
     <div id="question-number"></div>
-
-    <img id="question-image" src="" alt="Quiz Bild" />
-
+    <img id="question-image" src="" alt="Quiz Bild">
     <div id="buttons">
-      <button id="ai-btn">AI Fail</button>
-      <button id="monster-btn">Power Rangers Monster</button>
+      <button id="ai-btn">AI Fail</button>
+      <button id="monster-btn">Power Rangers Monster</button>
     </div>
-
-    <div id="result" style="display: none;"></div>
-    <button id="restart-btn" style="display: none;">Nochmal spielen</button>
+    <div id="result" style="display:none;"></div>
+    <button id="restart-btn" style="display:none;">Nochmal spielen</button>
   </div>
-
   <script>
-    /* ===== ASCII‑Hintergrund erzeugen ===== */
-    const asciiBg = document.getElementById('ascii-bg');
-    const chars   = ' .:-=+*#%@';
-    function generateAscii() {
-      const lines = [];
-      const cols = 120;   // Spalten
-      const rows = 120;   // Zeilen (doppelte Viewport‑Höhe)
-      for (let y = 0; y < rows; y++) {
-        let line = '';
-        for (let x = 0; x < cols; x++) {
-          line += chars[Math.floor(Math.random() * chars.length)];
+    document.addEventListener('DOMContentLoaded', () => {
+      const asciiBg = document.getElementById('ascii-bg');
+      const chars   = ' .:-=+*#%@';
+      const charW   = 8, charH = 8;
+      // Anzahl Spalten & Zeilen basierend auf Fenstergröße
+      const cols    = Math.floor(window.innerWidth / charW);
+      const rows    = Math.floor(window.innerHeight / charH);
+
+      // Quiz-Daten
+      const monsterCount = 67;
+      const monsters = Array.from({ length: monsterCount }, (_, i) => {
+        const num = String(i + 1).padStart(5, '0');
+        return { src: `images/powerrangers${num}.jpg`, answer: 'monster' };
+      });
+      const aiFailCount = 0;
+      const aiFails = Array.from({ length: aiFailCount }, (_, i) => {
+        const num = String(i + 1).padStart(5, '0');
+        return { src: `images/aifail${num}.jpg`, answer: 'ai' };
+      });
+      const quizData = [...monsters, ...aiFails].sort(() => Math.random() - 0.5);
+
+      // Quiz-Logik-Elemente
+      const imgEl   = document.getElementById('question-image');
+      const scoreEl = document.getElementById('score-value');
+      const qNumEl  = document.getElementById('question-number');
+      const resEl   = document.getElementById('result');
+      const btns    = document.getElementById('buttons');
+      const restart = document.getElementById('restart-btn');
+      let current = 0, score = 0;
+
+      imgEl.onerror = () => console.warn('Bild nicht gefunden:', imgEl.src);
+
+      function showQuestion() {
+        const q = quizData[current];
+        imgEl.src = q.src;
+        qNumEl.textContent = `Frage ${current+1} von ${quizData.length}`;
+      }
+      function endQuiz() {
+        btns.style.display = 'none'; imgEl.style.display = 'none';
+        resEl.style.display = 'block';
+        resEl.textContent = `Fertig! Du hast ${score} von ${quizData.length} Punkten.`;
+        restart.style.display = 'inline-block';
+      }
+      function answer(ch) {
+        if (ch === quizData[current].answer) { score++; scoreEl.textContent = score; }
+        current++;
+        current < quizData.length ? showQuestion() : endQuiz();
+      }
+      document.getElementById('ai-btn').addEventListener('click', () => answer('ai'));
+      document.getElementById('monster-btn').addEventListener('click', () => answer('monster'));
+      restart.addEventListener('click', () => location.reload());
+      showQuestion();
+
+      // Wellen-Animation
+      function animate(time) {
+        let output = '';
+        const t = time / 1000;
+        for (let y = 0; y < rows; y++) {
+          let line = '';
+          for (let x = 0; x < cols; x++) {
+            const wave = Math.sin((x * 0.3) + (t * 2) + (y * 0.5));
+            const idx = Math.floor((wave * 0.5 + 0.5) * (chars.length - 1));
+            line += chars[idx];
+          }
+          output += line + '\n';
         }
-        lines.push(line);
+        asciiBg.textContent = output;
+        requestAnimationFrame(animate);
       }
-      asciiBg.textContent = lines.join('\n');
-    }
-    generateAscii();
-
-    /* ===== Quiz‑Daten generieren ===== */
-    const monsterCount = 67; // powerrangers00001.jpg … powerrangers00067.jpg
-    const monsters = Array.from({ length: monsterCount }, (_, i) => {
-      const num = String(i + 1).padStart(5, '0');
-      return { src: `images/powerrangers${num}.jpg`, answer: 'monster' };
+      requestAnimationFrame(animate);
     });
-
-    // === Beispiel‑Daten für AI‑Fails ===
-    // Wenn du AI‑Fail‑Bilder hast, identisch benennen (z. B. aifail00001.jpg) oder manuell ergänzen.
-    const aiFailCount = 20; // <-- anpassen
-    const aiFails = Array.from({ length: aiFailCount }, (_, i) => {
-      const num = String(i + 1).padStart(5, '0');
-      return { src: `images/aifail${num}.jpg`, answer: 'ai' };
-    });
-
-    const quizData = [...monsters, ...aiFails];
-
-    /* ===== Quiz‑Logik ===== */
-    const questions = [...quizData].sort(() => Math.random() - 0.5);
-    let current = 0;
-    let score   = 0;
-
-    const imgEl      = document.getElementById('question-image');
-    const scoreEl    = document.getElementById('score-value');
-    const qNumEl     = document.getElementById('question-number');
-    const resultEl   = document.getElementById('result');
-    const buttonsEl  = document.getElementById('buttons');
-    const restartBtn = document.getElementById('restart-btn');
-
-    function showQuestion() {
-      const q = questions[current];
-      imgEl.src = q.src;
-      qNumEl.textContent = `Frage ${current + 1} von ${questions.length}`;
-    }
-
-    function endQuiz() {
-      imgEl.style.display   = 'none';
-      buttonsEl.style.display = 'none';
-      resultEl.style.display  = 'block';
-      resultEl.textContent    = `Fertig! Du hast ${score} von ${questions.length} Punkten.`;
-      restartBtn.style.display = 'inline-block';
-    }
-
-    function handleAnswer(choice) {
-      if (choice === questions[current].answer) {
-        score++;
-        scoreEl.textContent = score;
-      }
-      current++;
-      current < questions.length ? showQuestion() : endQuiz();
-    }
-
-    document.getElementById('ai-btn').addEventListener('click', () => handleAnswer('ai'));
-    document.getElementById('monster-btn').addEventListener('click', () => handleAnswer('monster'));
-    restartBtn.addEventListener('click', () => location.reload());
-
-    // Erststart
-    showQuestion();
   </script>
 </body>
 </html>
