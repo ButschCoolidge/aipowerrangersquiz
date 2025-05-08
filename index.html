@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fail oder Power Rangers Monster?</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f0f4ff;
+      margin: 0;
+    }
+    #quiz-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 320px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    button:hover {
+      transform: translateY(-2px);
+    }
+    #result {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container">
+    <h1>AI Fail oder Power Rangers Monster?</h1>
+    <div id="score">Punktzahl: <span id="score-value">0</span></div>
+    <div id="question-number"></div>
+
+    <img id="question-image" src="" alt="Quiz Bild" />
+
+    <div id="buttons">
+      <button id="ai-btn">AI Fail</button>
+      <button id="monster-btn">Power Rangers Monster</button>
+    </div>
+
+    <div id="result" style="display: none;"></div>
+    <button id="restart-btn" style="display: none;">Nochmal spielen</button>
+  </div>
+
+  <script>
+    /*
+     * === Quiz‑Daten =============================
+     * Lege deine Bilder im Ordner "/images" ab (z. B. images/ai1.jpg).
+     *   answer: "ai"     → Bild ist ein AI‑Fail
+     *           "monster" → Bild ist ein Power‑Rangers‑Monster
+     */
+    const quizData = [
+      { src: "images/ai1.jpg",       answer: "ai"      },
+      { src: "images/monster1.jpg",  answer: "monster" },
+      { src: "images/ai2.jpg",       answer: "ai"      },
+      { src: "images/monster2.jpg",  answer: "monster" }
+      // ⇑  Erweitere nach Belieben …
+    ];
+
+    /*
+     * === Quiz‑Logik =============================
+     */
+    const questions = [ ...quizData ].sort(() => Math.random() - 0.5);
+    let current = 0;
+    let score   = 0;
+
+    const imgEl      = document.getElementById("question-image");
+    const scoreEl    = document.getElementById("score-value");
+    const qNumEl     = document.getElementById("question-number");
+    const resultEl   = document.getElementById("result");
+    const buttonsEl  = document.getElementById("buttons");
+    const restartBtn = document.getElementById("restart-btn");
+
+    // Zeigt die aktuelle Frage
+    function showQuestion() {
+      const q = questions[current];
+      imgEl.src = q.src;
+      qNumEl.textContent = `Frage ${current + 1} von ${questions.length}`;
+    }
+
+    // Quiz beenden & Ergebnis anzeigen
+    function endQuiz() {
+      imgEl.style.display   = "none";
+      buttonsEl.style.display = "none";
+      resultEl.style.display  = "block";
+      resultEl.textContent    = `Fertig! Du hast ${score} von ${questions.length} Punkten.`;
+      restartBtn.style.display = "inline-block";
+    }
+
+    function handleAnswer(choice) {
+      if (choice === questions[current].answer) {
+        score++;
+        scoreEl.textContent = score;
+      }
+      current++;
+      current < questions.length ? showQuestion() : endQuiz();
+    }
+
+    document.getElementById("ai-btn")
+            .addEventListener("click", () => handleAnswer("ai"));
+    document.getElementById("monster-btn")
+            .addEventListener("click", () => handleAnswer("monster"));
+    restartBtn.addEventListener("click", () => location.reload());
+
+    // Erststart
+    showQuestion();
+  </script>
+</body>
+</html>
