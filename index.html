@@ -5,47 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Fail oder Power Rangers Monster?</title>
   <style>
+    /* Vollflächiges ASCII-Glyphen-Overlay */
+    #ascii-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      margin: 0; padding: 0;
+      white-space: pre;
+      font-family: monospace;
+      font-size: 16px;
+      line-height: 16px;
+      color: #fff;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
     /* Grundlayout */
     body {
       margin: 0; padding: 0;
-      display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; background: #000; overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #000;
+      overflow: hidden;
       font-family: system-ui, sans-serif;
-    }
-    /* ASCII-Wellen-Background */
-    #ascii-bg {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      white-space: pre; font-family: monospace;
-      font-size: 8px; line-height: 8px;
-      color: #fff; opacity: 0.1;
-      pointer-events: none; z-index: 0;
     }
     /* Quiz-Container */
     #quiz-container {
       position: relative; z-index: 1;
-      background: rgba(255,255,255,0.85); backdrop-filter: blur(4px);
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(4px);
       padding: 2rem; border-radius: 1rem;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
       text-align: center; width: 320px;
     }
     #quiz-container img {
       max-width: 100%; height: auto;
-      border-radius: 0.5rem; margin: 0 auto 1rem;
-      display: block;
+      border-radius: 0.5rem; margin: 0 auto 1rem; display: block;
     }
     button {
       padding: 0.8rem 1.2rem; margin: 0.5rem;
       font-size: 1rem; border: none; border-radius: 0.5rem;
       cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      background: #007bff; color: #fff;
-      transition: transform 0.15s;
+      background: #007bff; color: #fff; transition: transform 0.15s;
     }
     button:hover { transform: translateY(-2px); }
     #result { font-size: 1.2rem; margin-top: 1rem; }
   </style>
 </head>
 <body>
+  <!-- ASCII-Glyphen-Overlay -->
   <pre id="ascii-bg"></pre>
+  <!-- Quiz-Container -->
   <div id="quiz-container">
     <h1>AI Fail oder Power Rangers Monster?</h1>
     <div id="score">Punktzahl: <span id="score-value">0</span></div>
@@ -60,75 +72,69 @@
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const asciiBg = document.getElementById('ascii-bg');
-      const chars   = ' .:-=+*#%@';
-      const charW   = 8, charH = 8;
-      // Anzahl Spalten & Zeilen basierend auf Fenstergröße
-      const cols    = Math.floor(window.innerWidth / charW);
-      const rows    = Math.floor(window.innerHeight / charH);
+      // Zeichenpool und Hintergrund-Generator
+      const chars = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:\",.<>/?~±§µΩπ∑ß∂ƒ©®†‡•…°·«»‹›“”‘’„ˆ˙˚∆≤≥≈ç∞÷×°`;
+      const bg = document.getElementById('ascii-bg');
+      const fontSize = 16;
+
+      function drawGlyphs() {
+        const cols = Math.ceil(window.innerWidth / fontSize) + 2;
+        const rows = Math.ceil(window.innerHeight / fontSize) + 2;
+        let out = '';
+        for (let y = 0; y < rows; y++) {
+          let line = '';
+          for (let x = 0; x < cols; x++) {
+            line += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          out += line + '\n';
+        }
+        bg.textContent = out;
+      }
+      drawGlyphs();
+      setInterval(drawGlyphs, 50);
 
       // Quiz-Daten
       const monsterCount = 67;
-      const monsters = Array.from({ length: monsterCount }, (_, i) => {
-        const num = String(i + 1).padStart(5, '0');
-        return { src: `images/powerrangers${num}.jpg`, answer: 'monster' };
-      });
+      const monsters = Array.from({ length: monsterCount }, (_, i) => ({
+        src: `images/powerrangers${String(i+1).padStart(5,'0')}.jpg`,
+        answer: 'monster'
+      }));
       const aiFailCount = 0;
-      const aiFails = Array.from({ length: aiFailCount }, (_, i) => {
-        const num = String(i + 1).padStart(5, '0');
-        return { src: `images/aifail${num}.jpg`, answer: 'ai' };
-      });
+      const aiFails = Array.from({ length: aiFailCount }, (_, i) => ({
+        src: `images/aifail${String(i+1).padStart(5,'0')}.jpg`,
+        answer: 'ai'
+      }));
       const quizData = [...monsters, ...aiFails].sort(() => Math.random() - 0.5);
 
-      // Quiz-Logik-Elemente
-      const imgEl   = document.getElementById('question-image');
+      // Quiz-Logik
+      const img = document.getElementById('question-image');
       const scoreEl = document.getElementById('score-value');
-      const qNumEl  = document.getElementById('question-number');
-      const resEl   = document.getElementById('result');
-      const btns    = document.getElementById('buttons');
+      const qNumEl = document.getElementById('question-number');
+      const resEl = document.getElementById('result');
+      const btns = document.getElementById('buttons');
       const restart = document.getElementById('restart-btn');
-      let current = 0, score = 0;
+      let idx = 0, score = 0;
 
-      imgEl.onerror = () => console.warn('Bild nicht gefunden:', imgEl.src);
-
-      function showQuestion() {
-        const q = quizData[current];
-        imgEl.src = q.src;
-        qNumEl.textContent = `Frage ${current+1} von ${quizData.length}`;
+      img.onerror = () => console.warn('Bild nicht gefunden:', img.src);
+      function show() {
+        const q = quizData[idx]; img.src = q.src;
+        qNumEl.textContent = `Frage ${idx+1} von ${quizData.length}`;
       }
-      function endQuiz() {
-        btns.style.display = 'none'; imgEl.style.display = 'none';
+      function finish() {
+        btns.style.display = 'none'; img.style.display = 'none';
         resEl.style.display = 'block';
         resEl.textContent = `Fertig! Du hast ${score} von ${quizData.length} Punkten.`;
         restart.style.display = 'inline-block';
       }
-      function answer(ch) {
-        if (ch === quizData[current].answer) { score++; scoreEl.textContent = score; }
-        current++;
-        current < quizData.length ? showQuestion() : endQuiz();
+      function pick(c) {
+        if (c === quizData[idx].answer) { score++; scoreEl.textContent = score; }
+        idx++;
+        idx < quizData.length ? show() : finish();
       }
-      document.getElementById('ai-btn').addEventListener('click', () => answer('ai'));
-      document.getElementById('monster-btn').addEventListener('click', () => answer('monster'));
+      document.getElementById('ai-btn').addEventListener('click', () => pick('ai'));
+      document.getElementById('monster-btn').addEventListener('click', () => pick('monster'));
       restart.addEventListener('click', () => location.reload());
-      showQuestion();
-
-      // Wellen-Animation
-      function animate(time) {
-        let output = '';
-        const t = time / 1000;
-        for (let y = 0; y < rows; y++) {
-          let line = '';
-          for (let x = 0; x < cols; x++) {
-            const wave = Math.sin((x * 0.3) + (t * 2) + (y * 0.5));
-            const idx = Math.floor((wave * 0.5 + 0.5) * (chars.length - 1));
-            line += chars[idx];
-          }
-          output += line + '\n';
-        }
-        asciiBg.textContent = output;
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
+      show();
     });
   </script>
 </body>
