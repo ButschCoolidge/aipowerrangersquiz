@@ -140,7 +140,7 @@
       // ASCII-Canvas & Maske
       const canvas = document.getElementById('ascii-canvas'), ctx = canvas.getContext('2d');
       let w, h, cols, rows, time = 0;
-      const fontSize = 12, charsSet = ' .:-=+*#%@';
+      const fontSize = 12, charsSet = 'öq^(∏5bõ«åTl9´¶-‹(…4ÔÏõ¶˚±1¸+E#6ÆgÌ˙“ÖÕiÆÉzﬂÚƒ”œáØrb"ü2+:É◊)i‚	KpÕ—˘◊ºCs∏ûµÛ◊ÑlÁ”uàeq¥äˆÎè:0‡Ê¶˜f &˙ÕïÁöâ‰ÁìUíLw†Àœ5±¢–ïû£¶F(V»Ù†‘}Ω"Ùß†‡ÒC πÒR«@)Qu´PE∑ﬁ¢˜ [x9Ê¥∑‰fíﬁûï≠k¬‡u§P[[t‚Ø,,î‘˛_©)jgI≈@WÊ´Û®5I◊Ê8¶Y¸¶´HŸ<zT“6è÷™≥¸∆°∞µÜíEG)œ§ë¡5%º{»8Õ!ã'îsöë4Ê‰ WM°ÿôÓ7ò≈z@&t‘ëîBdfëi&4cÚ8ßù7 a@«•w¶ïkbÃ<ı„∞5Œ›\¿øuÛÅ≈/Råe”˜vß∂ú™≈Xhéî≤œ∏‘ÆI]lÅ)«JW¡<}';
       const maskGif = new Image(); maskGif.src = 'images/mask.gif';
       function resizeC() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; cols = Math.ceil(w / fontSize); rows = Math.ceil(h / fontSize); }
       window.addEventListener('resize', resizeC); resizeC();
