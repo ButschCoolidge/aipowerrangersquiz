@@ -10,7 +10,6 @@
 #                                                                          
 #                                                                          
 #                                                      -->
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -40,6 +39,8 @@
     }
     #quiz-container img {
       max-width: 100%; height: auto;
+      max-height: 250px; /* Begrenzung der Bildhöhe für Konsistenz */
+      object-fit: contain;
       border-radius: 0.5rem; margin: 1rem auto;
       display: block;
     }
@@ -48,10 +49,11 @@
       padding: 0.8rem 1.2rem; margin: 0.5rem;
       font-size: 1rem; border: none; border-radius: 0.5rem;
       cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      background: #007bff; color: #fff; transition: transform 0.15s;
+      background: #007bff; color: #fff; transition: transform 0.15s, background-color 0.15s;
     }
-    button:hover { transform: translateY(-2px); }
-    #info { margin: 1rem 0; font-size: 1rem; }
+    button:hover { transform: translateY(-2px); background-color: #0056b3; }
+    button:disabled { background-color: #6c757d; cursor: not-allowed; transform: translateY(0); }
+    #info { margin: 1rem 0; font-size: 1rem; min-height: 2.5em; /* Platz für mehrzeilige Infos */ }
     #next-btn, #restart-btn { display: none; }
     #imprint-link {
       position: absolute; bottom: 8px; right: 8px;
@@ -74,11 +76,10 @@
     <div id="info"></div>
     <button id="next-btn">Nächstes</button>
     <button id="restart-btn">Neu starten</button>
-    <a id="imprint-link" href="imprint.html">Impressum</a>
+    <a id="imprint-link" href="imprint.html" target="_blank">Impressum</a>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Bild-Konfiguration inkl. AI bis images00047
       const imageConfig = [
         {filename:'images00001.jpg',answer:'monster',name:'Loyax',url:'https://powerrangers.fandom.com/wiki/Loyax'},
         {filename:'images00002.jpg',answer:'monster',name:'Mad Mike',url:'https://powerrangers.fandom.com/wiki/Mad_Mike_the_Pizza_Chef'},
@@ -95,7 +96,6 @@
         {filename:'images00013.jpg',answer:'monster',name:'Ringbah',url:'https://powerrangers.fandom.com/wiki/Ringbah'},
         {filename:'images00014.jpg',answer:'monster',name:'Skelekron',url:'https://powerrangers.fandom.com/wiki/Skelekron'},
         {filename:'images00015.jpg',answer:'monster',name:'Turkey Jerk',url:'https://powerrangers.fandom.com/wiki/Turkey_Jerk'},
-        // AI-Bilder
         {filename:'images00016.jpg',answer:'ai'},{filename:'images00017.jpg',answer:'ai'},{filename:'images00018.jpg',answer:'ai'},
         {filename:'images00019.jpg',answer:'ai'},{filename:'images00020.jpg',answer:'ai'},{filename:'images00021.jpg',answer:'ai'},
         {filename:'images00022.jpg',answer:'ai'},{filename:'images00023.jpg',answer:'ai'},{filename:'images00024.jpg',answer:'ai'},
@@ -104,47 +104,95 @@
         {filename:'images00040.jpg',answer:'ai'},{filename:'images00041.jpg',answer:'ai'},{filename:'images00042.jpg',answer:'ai'},
         {filename:'images00043.jpg',answer:'ai'},{filename:'images00044.jpg',answer:'ai'},{filename:'images00045.jpg',answer:'ai'},
         {filename:'images00046.jpg',answer:'ai'},{filename:'images00047.jpg',answer:'ai'},
-        // weitere Monster
         {filename:'images00028.jpg',answer:'monster',name:'Hate Master',url:'https://powerrangers.fandom.com/wiki/Hate_Master'},
         {filename:'images00029.jpg',answer:'monster',name:'Bratboy',url:'https://powerrangers.fandom.com/wiki/Farkas_Bulkmeier'},
         {filename:'images00030.jpg',answer:'monster',name:'Debo Kokodoko',url:'https://powerrangers.fandom.com/wiki/Debo_Kokodoko'}
       ];
-      // Pools
+
       const aiPool = imageConfig.filter(c => c.answer === 'ai');
       const moPool = imageConfig.filter(c => c.answer === 'monster');
-      // Zufällige AI-Anzahl (30-65%)
-      const minAI = Math.ceil(0.3 * 15), maxAI = Math.floor(0.65 * 15);
-      const aiCount = Math.floor(Math.random() * (maxAI - minAI + 1)) + minAI;
-      function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
-      const aiSelected = shuffle(aiPool).slice(0, aiCount);
-      const moSelected = shuffle(moPool).slice(0, 15 - aiCount);
-      // Sequenz mit max 4 gleichen in Folge
-      let seq = [], last = null, run = 0;
-      for (let i = 0; i < 15; i++) {
-        let pickAI;
-        if (run >= 4) {
-          pickAI = last === 'monster';
-        } else if (aiSelected.length === 0) {
-          pickAI = false;
-        } else if (moSelected.length === 0) {
-          pickAI = true;
-        } else {
-          pickAI = Math.random() < 0.5;
-        }
-        const item = pickAI ? aiSelected.pop() : moSelected.pop();
-        seq.push(item);
-        if (item.answer === last) run++; else { last = item.answer; run = 1; }
-      }
-      const quizDataFinal = seq;
+      
+      const totalQuestions = 15;
+      const minAIRatio = 0.3;
+      const maxAIRatio = 0.65;
+      const aiCount = Math.floor(Math.random() * (Math.floor(maxAIRatio * totalQuestions) - Math.ceil(minAIRatio * totalQuestions) + 1)) + Math.ceil(minAIRatio * totalQuestions);
+      const moCount = totalQuestions - aiCount;
 
-      // ASCII-Canvas & Maske
+      function shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+      }
+
+      let tempAiSelected = shuffleArray([...aiPool]).slice(0, aiCount);
+      let tempMoSelected = shuffleArray([...moPool]).slice(0, moCount);
+      
+      let generatedSequence = [];
+      let lastAnswerType = null;
+      let currentRun = 0;
+      const MAX_CONSECUTIVE_RUN = 4;
+
+      for (let i = 0; i < totalQuestions; i++) {
+          let choiceIsAi;
+          const canPickAi = tempAiSelected.length > 0;
+          const canPickMo = tempMoSelected.length > 0;
+
+          if (!canPickAi && !canPickMo) {
+              console.error("Sequenzerstellung: Beide Pools sind leer, bevor alle Fragen generiert wurden. Index:", i);
+              break; 
+          }
+
+          if (currentRun >= MAX_CONSECUTIVE_RUN) {
+              choiceIsAi = (lastAnswerType === 'monster'); // Erzwinge Wechsel
+              if ((choiceIsAi && !canPickAi) || (!choiceIsAi && !canPickMo)) { // Wenn erzwungene Wahl nicht möglich
+                  choiceIsAi = !choiceIsAi; // Nimm den anderen Typ (wenn möglich)
+              }
+          } else {
+              if (!canPickAi) choiceIsAi = false;
+              else if (!canPickMo) choiceIsAi = true;
+              else choiceIsAi = Math.random() < (tempAiSelected.length / (tempAiSelected.length + tempMoSelected.length)); // Gewichteter Zufall
+          }
+
+          let currentItem;
+          if (choiceIsAi) {
+              if (canPickAi) currentItem = tempAiSelected.pop();
+              else currentItem = tempMoSelected.pop(); // Fallback, wenn AI gewählt, aber leer
+          } else {
+              if (canPickMo) currentItem = tempMoSelected.pop();
+              else currentItem = tempAiSelected.pop(); // Fallback, wenn Monster gewählt, aber leer
+          }
+
+          if (!currentItem) {
+              console.error(`Sequenzerstellung: Konnte kein Item für Frage ${i+1} auswählen.`);
+              break;
+          }
+          generatedSequence.push(currentItem);
+
+          if (currentItem.answer === lastAnswerType) currentRun++;
+          else { lastAnswerType = currentItem.answer; currentRun = 1; }
+      }
+      
+      const quizDataFinal = generatedSequence;
+      const quizContainerEl = document.getElementById('quiz-container');
+
+      if (quizDataFinal.length !== totalQuestions) {
+          quizContainerEl.innerHTML = `<h1>Fehler</h1><p>Das Quiz konnte nicht korrekt initialisiert werden (nur ${quizDataFinal.length}/${totalQuestions} Fragen). Bitte laden Sie die Seite neu.</p><button onclick="location.reload()">Neu laden</button>`;
+          return; // Stoppt weitere Ausführung
+      }
+
+      // ASCII-Canvas & Maske (Funktionalität bleibt gleich)
       const canvas = document.getElementById('ascii-canvas'), ctx = canvas.getContext('2d');
       let w, h, cols, rows, time = 0;
-      const fontSize = 12, charsSet = 'öq^(∏5bõ«åTl9´¶-‹(…4ÔÏõ¶˚±1¸+E#6ÆgÌ˙“ÖÕiÆÉzﬂÚƒ”œáØrb"ü2+:É◊)i‚	KpÕ—˘◊ºCs∏ûµÛ◊ÑlÁ”uàeq¥äˆÎè:0‡Ê¶˜f &˙ÕïÁöâ‰ÁìUíLw†Àœ5±¢–ïû£¶F(V»Ù†‘}Ω"Ùß†‡ÒC πÒR«@)Qu´PE∑ﬁ¢˜ [x9Ê¥∑‰fíﬁûï≠k¬‡u§P[[t‚Ø,,î‘˛_©)jgI≈@WÊ´Û®5I◊Ê8¶Y¸¶´HŸ<zT“6è÷™≥¸∆°∞µÜíEG)œ§ë¡5%º{»8Õ!ã'îsöë4Ê‰ WM°ÿôÓ7ò≈z@&t‘ëîBdfëi&4cÚ8ßù7 a@«•w¶ïkbÃ<ı„∞5Œ›\¿øuÛÅ≈/Råe”˜vß∂ú™≈Xhéî≤œ∏‘ÆI]lÅ)«JW¡<}';
-      const maskGif = new Image(); maskGif.src = 'images/mask.gif';
+      const fontSize = 12, charsSet = ' .:-=+*#%@';
+      const maskGif = new Image(); 
+      maskGif.src = 'images/mask.gif'; // Stellen Sie sicher, dass dieses Bild existiert
+      
       function resizeC() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; cols = Math.ceil(w / fontSize); rows = Math.ceil(h / fontSize); }
       window.addEventListener('resize', resizeC); resizeC();
-      function draw() {
+      
+      function drawAscii() {
         ctx.clearRect(0, 0, w, h);
         ctx.fillStyle = 'rgba(0,255,200,0.1)'; ctx.font = `${fontSize}px monospace`;
         for (let y = 0; y < rows; y++) {
@@ -153,68 +201,123 @@
             ctx.fillText(charsSet.charAt(Math.floor(Math.random() * charsSet.length)), x * fontSize + offs, y * fontSize + fontSize);
           }
         }
-        ctx.globalCompositeOperation = 'destination-in'; if (maskGif.complete) ctx.drawImage(maskGif, 0, 0, w, h);
-        ctx.globalCompositeOperation = 'source-over'; time += 0.01;
-        requestAnimationFrame(draw);
+        if (maskGif.complete && maskGif.naturalWidth > 0) { // Prüft ob Bild geladen und valide ist
+            ctx.globalCompositeOperation = 'destination-in'; 
+            ctx.drawImage(maskGif, 0, 0, w, h);
+            ctx.globalCompositeOperation = 'source-over'; 
+        }
+        time += 0.01;
+        requestAnimationFrame(drawAscii);
       }
-      draw();
+      if (maskGif.complete && maskGif.naturalWidth > 0) drawAscii();
+      else maskGif.onload = drawAscii;
+      maskGif.onerror = () => { // Falls Maske nicht lädt, trotzdem zeichnen
+          console.warn("Maskenbild konnte nicht geladen werden. ASCII-Effekt ohne Maske.");
+          drawAscii(); 
+      }
+
 
       // Quiz-Logik
-      let idx = 0, score = 0;
-      const imgEl = document.getElementById('question-image'), scoreEl = document.getElementById('score-value'),
-            qNumEl = document.getElementById('question-number'), infoEl = document.getElementById('info'),
-            aiBtn = document.getElementById('ai-btn'), moBtn = document.getElementById('monster-btn'),
-            nextBtn = document.getElementById('next-btn'), restartBtn = document.getElementById('restart-btn');
-      const messages = [
-        'Nicht schlimm, auch ein blindes Huhn findet mal ein Korn – oh ...',
-        'Nicht jeder braucht Nerdpower.',
-        'Noch Luft nach oben!',
-        'Keep trying!',
-        'Solide Leistung.',
-        'Ganz okay!',
-        'Nicht übel!',
-        'Gut im Training!',
-        'Starkes Ergebnis!',
-        'Wow, fast perfekt!',
-        'Fast Unschlagbar!',
-        'Hervorragend!',
-        'Verdammt gut. Dir kann man (fast) nichts vormachen.',
-        'Königsklasse!',
-        'Unerreichter Meister!',
-        'Be honest: Powerrangers Nerd oder bist du eine KI?! Glückwunsch!'
-      ];
+      let currentQuestionIndex = 0, score = 0;
+      const imgEl = document.getElementById('question-image'), 
+            scoreEl = document.getElementById('score-value'),
+            qNumEl = document.getElementById('question-number'), 
+            infoEl = document.getElementById('info'),
+            aiBtn = document.getElementById('ai-btn'), 
+            moBtn = document.getElementById('monster-btn'),
+            nextBtn = document.getElementById('next-btn'), 
+            restartBtn = document.getElementById('restart-btn'),
+            buttonsDiv = document.getElementById('buttons');
+
+      const endMessages = [ /* ... Ihre Nachrichten ... */ ]; // Ihre Nachrichten hier einfügen
+
       function showQuestion() {
-        const q = quizDataFinal[idx]; imgEl.src = `images/${q.filename}`;
-        qNumEl.textContent = `Frage ${idx+1} von 15`;
-        aiBtn.disabled = moBtn.disabled = false;
+        if (currentQuestionIndex >= quizDataFinal.length) { // Sicherstellen, dass Index gültig ist
+            endQuiz();
+            return;
+        }
+        const currentQuizItem = quizDataFinal[currentQuestionIndex];
+        if (!currentQuizItem || !currentQuizItem.filename) {
+            console.error("Ungültiges Quiz-Item bei Index:", currentQuestionIndex, currentQuizItem);
+            infoEl.textContent = "Fehler: Frage konnte nicht geladen werden.";
+            // Quiz ggf. hier beenden oder überspringen
+            endQuiz("Fehler beim Laden der Frage.");
+            return;
+        }
+
+        imgEl.style.display = 'block'; // Sicherstellen, dass Bild sichtbar ist
+        imgEl.src = `images/${currentQuizItem.filename}`;
+        imgEl.onerror = () => {
+            console.error(`Bild konnte nicht geladen werden: images/${currentQuizItem.filename}`);
+            infoEl.textContent = `Fehler: Bild "${currentQuizItem.filename}" konnte nicht geladen werden.`;
+            imgEl.style.display = 'none'; // Bild ausblenden bei Fehler
+            aiBtn.disabled = true; moBtn.disabled = true;
+            nextBtn.style.display = 'none';
+        };
+        imgEl.onload = () => { // Optional: Aktionen nach erfolgreichem Laden
+            aiBtn.disabled = false; moBtn.disabled = false; // Buttons erst aktivieren, wenn Bild (potenziell) da
+        }
+        
+        qNumEl.textContent = `Frage ${currentQuestionIndex + 1} von ${totalQuestions}`;
+        aiBtn.disabled = false; moBtn.disabled = false;
+        aiBtn.style.display = 'inline-block'; moBtn.style.display = 'inline-block';
+        buttonsDiv.style.display = 'block';
         infoEl.textContent = '';
-        nextBtn.style.display = 'none'; restartBtn.style.display = 'none'; scoreEl.textContent = score;
+        nextBtn.style.display = 'none'; 
+        restartBtn.style.display = 'none'; 
+        scoreEl.textContent = score;
       }
+
       function handleAnswer(choice) {
-        aiBtn.disabled = moBtn.disabled = true;
-        const q = quizDataFinal[idx];
-        if (choice === 'ai' && q.answer === 'ai') {
-          score++; scoreEl.textContent = score; infoEl.textContent = 'Richtig! AI.';
-        } else if (choice === 'monster' && q.answer === 'monster') {
-          score++; scoreEl.textContent = score;
-          infoEl.innerHTML = `Richtig! NOT AI: <a href="${q.url}" target="_blank">${q.name}</a>`;
-        } else if (choice === 'ai' && q.answer === 'monster') {
-          infoEl.innerHTML = `Falsch! NOT AI: <a href="${q.url}" target="_blank">${q.name}</a>`;
-        } else { infoEl.textContent = 'Falsch! AI.'; }
+        aiBtn.disabled = true; moBtn.disabled = true;
+        const currentQuizItem = quizDataFinal[currentQuestionIndex];
+        let isCorrect = false;
+
+        if (choice === 'ai' && currentQuizItem.answer === 'ai') isCorrect = true;
+        else if (choice === 'monster' && currentQuizItem.answer === 'monster') isCorrect = true;
+
+        if (isCorrect) {
+          score++; 
+          scoreEl.textContent = score; 
+          infoEl.textContent = 'Richtig! ';
+          if(currentQuizItem.answer === 'monster' && currentQuizItem.name) {
+             infoEl.innerHTML += `NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizItem.name}</a>`;
+          } else {
+             infoEl.textContent += (currentQuizItem.answer === 'ai' ? 'AI.' : 'NOT AI.');
+          }
+        } else {
+          infoEl.textContent = 'Falsch! ';
+           if(currentQuizItem.answer === 'monster' && currentQuizItem.name) {
+             infoEl.innerHTML += `Es war NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizItem.name}</a>`;
+          } else {
+             infoEl.textContent += (currentQuizItem.answer === 'ai' ? 'Es war AI.' : 'Es war NOT AI.');
+          }
+        }
         nextBtn.style.display = 'inline-block';
       }
+
       aiBtn.addEventListener('click', () => handleAnswer('ai'));
       moBtn.addEventListener('click', () => handleAnswer('monster'));
+
       nextBtn.addEventListener('click', () => {
-        idx++;
-        if (idx < 15) showQuestion(); else {
-          aiBtn.style.display = moBtn.style.display = nextBtn.style.display = 'none';
-          imgEl.style.display = 'none';
-          infoEl.textContent = `${score}/15 – ` + messages[score];
-          restartBtn.style.display = 'inline-block';
-        }
+        currentQuestionIndex++;
+        if (currentQuestionIndex < totalQuestions) showQuestion(); 
+        else endQuiz();
       });
+      
+      function endQuiz(customMessage = "") {
+        buttonsDiv.style.display = 'none'; // aiBtn und moBtn sind in diesem Div
+        nextBtn.style.display = 'none';
+        imgEl.style.display = 'none';
+        qNumEl.textContent = "Quiz beendet!";
+        const finalMessage = customMessage || `${score}/${totalQuestions} – ` + (endMessages[score] || endMessages[endMessages.length -1] || "Gut gemacht!");
+        infoEl.textContent = finalMessage;
+        restartBtn.style.display = 'inline-block';
+      }
+
       restartBtn.addEventListener('click', () => location.reload());
+      
+      // Quiz starten
       showQuestion();
     });
   </script>
