@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212; /* Dunkler Basishintergrund */
+            color: #e0e0e0;
+            overflow-x: hidden;
+            padding-bottom: 40px; /* Etwas Platz am Ende der Seite */
+        }
+
+        #ascii-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Canvas hinter dem Inhalt */
+        }
+
+        /* Impressum (article) */
+        article#imprint-content {
+            display: block; /* Sicherstellen, dass es immer sichtbar ist */
+            position: relative;
+            z-index: 1; /* Über dem Canvas */
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 25px;
+            background-color: rgba(25, 25, 25, 0.85); /* Halbtransparenter dunkler Hintergrund */
+            border: 1px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 200, 0.25);
+            color: #ccc;
+            line-height: 1.7;
+        }
+
+        article#imprint-content h2 {
+            color: #00ffc8; /* Passend zum Canvas-Farbton */
+            border-bottom: 1px solid #00ffc8;
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        article#imprint-content h3 {
+            color: #e0e0e0;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        article#imprint-content p {
+            margin-bottom: 15px;
+        }
+
+        article#imprint-content a {
+            color: #34ace0; /* Helleres Blau für Links im dunklen Theme */
+            text-decoration: none;
+        }
+        article#imprint-content a:hover {
+            text-decoration: underline;
+            color: #5dade2;
+        }
+
+        article#imprint-content strong {
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="ascii-canvas"></canvas>
+
+    <article id="imprint-content">
+        <h2>Impressum</h2>
+        <p>Angaben gemäß § 5 TMG</p>
+
+        <p>
+            <strong>Betreiber:</strong><br>
+            Paul Bausch<br>
+            Eilenau 32<br>
+            22769 Hamburg
+        </p>
+
+        <h3>Kontakt</h3>
+        <p>
+            Telefon: +49 (0) 4036936449<br>
+            E-Mail: <a href="mailto:nope@lukasbausch.de">nope@lukasbausch.de</a>
+        </p>
+
+        <h3>Haftung für Inhalte</h3>
+        <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+
+        <h3>Haftung für Links</h3>
+        <p>Unsere Seite enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+
+        <h3>Urheberrecht</h3>
+        <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Beiträge Dritter sind als solche gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors.</p>
+
+        <h3>Bildnachweis</h3>
+        <p>Monstergrafiken und weitere Bilder stammen von <a href="https://powerrangers.fandom.com" target="_blank" rel="noopener noreferrer">Power Rangers Wiki</a> und werden hier ausschließlich im Rahmen dieses Quiz verwendet.</p>
+
+        <h3>Plattform der Auslieferung</h3>
+        <p>Diese Website wird bereitgestellt über <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.</p>
+    </article>
+
+    <script>
+        // ASCII-Canvas & Maske
+        const canvas = document.getElementById('ascii-canvas'), ctx = canvas.getContext('2d');
+        let w, h, cols, rows, time = 0;
+        const fontSize = 12, charsSet = ' .:-=+*#%@';
+        const maskGif = new Image();
+        // WICHTIG: Stellen Sie sicher, dass diese Bilddatei existiert und der Pfad korrekt ist!
+        // Wenn Sie keine Maske verwenden möchten, können Sie die Zeilen mit 'maskGif' und 'ctx.drawImage' entfernen/auskommentieren.
+        maskGif.src = 'images/mask.gif'; // Beispielpfad, bitte anpassen! Ggf. entfernen, wenn nicht benötigt.
+
+        function resizeC() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            cols = Math.ceil(w / fontSize);
+            rows = Math.ceil(h / fontSize);
+        }
+        window.addEventListener('resize', resizeC);
+        resizeC();
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = 'rgba(0,255,200,0.1)'; // Farbe der ASCII-Zeichen
+            ctx.font = `${fontSize}px monospace`;
+            for (let y = 0; y < rows; y++) {
+                const offs = Math.sin(y * 0.2 + time) * 20;
+                for (let x = 0; x < cols; x++) {
+                    ctx.fillText(charsSet.charAt(Math.floor(Math.random() * charsSet.length)), x * fontSize + offs, y * fontSize + fontSize);
+                }
+            }
+            // Maske nur anwenden, wenn das Bild geladen und vollständig ist
+            if (maskGif.complete && maskGif.naturalWidth !== 0) {
+                ctx.globalCompositeOperation = 'destination-in';
+                ctx.drawImage(maskGif, 0, 0, w, h);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            time += 0.01;
+            requestAnimationFrame(draw);
+        }
+
+        // Startet das Zeichnen, sobald das Maskenbild geladen ist (oder sofort, wenn es gecached ist)
+        // Wenn Sie maskGif.src auskommentiert haben, rufen Sie draw() direkt auf.
+        if (maskGif.src.endsWith('undefined') || !maskGif.src.includes("images/mask.gif")) { // Fallback wenn maskGif.src leer oder nicht gesetzt
+            draw();
+        } else if (maskGif.complete) {
+            draw();
+        } else {
+            maskGif.onload = draw;
+            maskGif.onerror = () => {
+                console.error("Maskenbild konnte nicht geladen werden oder ist nicht vorhanden. ASCII-Effekt wird ohne Maske gezeichnet.");
+                draw(); // Zeichne trotzdem, aber ohne Maske
+            }
+        }
+    </script>
+</body>
+</html>
