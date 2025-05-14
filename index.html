@@ -258,7 +258,7 @@ Cheater!
         {filename:'images00013.jpg',answer:'monster',name:'Ringbah',url:'https://powerrangers.fandom.com/wiki/Ringbah'},
         {filename:'images00014.jpg',answer:'monster',name:'Skelekron',url:'https://powerrangers.fandom.com/wiki/Skelekron'},
         {filename:'images00015.jpg',answer:'monster',name:'Turkey Jerk',url:'https://powerrangers.fandom.com/wiki/Turkey_Jerk'},
-        {filename:'images00016.jpg',answer:'ai'},{filename:'images00017.jpg',answer:'ai'},{filename:'images00018.jpg',answer:'ai'},
+        {filename:'images00016.jpg',answer:'ai'},{filename:'images00017.jpg',answer:'ai'},
         {filename:'images00019.jpg',answer:'ai'},{filename:'images00020.jpg',answer:'ai'},{filename:'images00021.jpg',answer:'ai'},
         {filename:'images00022.jpg',answer:'ai'},{filename:'images00023.jpg',answer:'ai'},{filename:'images00024.jpg',answer:'ai'},
         {filename:'images00025.jpg',answer:'ai'},{filename:'images00026.jpg',answer:'ai'},{filename:'images00027.jpg',answer:'ai'},
@@ -274,9 +274,9 @@ Cheater!
       const aiPool = imageConfig.filter(c => c.answer === 'ai');
       const moPool = imageConfig.filter(c => c.answer === 'monster');
 
-      const totalQuestions = 15;
+      const totalQuestions = 20;
       const minAIRatio = 0.3;
-      const maxAIRatio = 0.65;
+      const maxAIRatio = 0.70;
       const aiCount = Math.floor(Math.random() * (Math.floor(maxAIRatio * totalQuestions) - Math.ceil(minAIRatio * totalQuestions) + 1)) + Math.ceil(minAIRatio * totalQuestions);
       const moCount = totalQuestions - aiCount;
 
@@ -361,19 +361,24 @@ Cheater!
           /* 0  */ "Oje, kein Treffer. Aber hey, Übung macht den Meister!",
           /* 1  */ "Ein Punkt ist ein Anfang! Probier's gleich nochmal.",
           /* 2  */ "Nicht schlecht! Du hast ein paar erkannt.",
-          /* 3  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
-          /* 4  */ "Gut gemacht! Du liegst schon öfter richtig.",
-          /* 5  */ "Stark! Du bist auf dem besten Weg zum AI-Detektiv.",
-          /* 6  */ "Sehr gut! Die Hälfte ist geschafft, weiter so!",
-          /* 7  */ "Beeindruckend! Du hast ein gutes Gespür.",
-          /* 8  */ "Klasse Leistung! Die meisten erkennst du schon.",
-          /* 9  */ "Ausgezeichnet! Du bist ein wahrer Kenner.",
-          /* 10 */ "Wow! Nur noch wenige Fehler, fast perfekt!",
-          /* 11 */ "Unglaublich! Du bist ein AI-Spürhund!",
-          /* 12 */ "Phänomenal! Kaum zu glauben, wie gut du bist!",
-          /* 13 */ "Meisterhaft! Ist da etwa eine echte AI am Werk?",
-          /* 14 */ "Perfektion! Du hast sie alle entlarvt! Oder bist du selbst eine AI?",
-          /* 15 */ "Absolute Perfektion! Unmenschlich gut! Bist du sicher, dass du keine AI bist?"
+          /* 3  */ "Nicht schlecht! Du hast ein paar erkannt.",
+          /* 4  */ "Nicht schlecht! Du hast ein paar erkannt.",
+          /* 5  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
+          /* 6  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
+          /* 7  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
+          /* 8  */ "Auf einem guten Weg. Weiter so.",
+          /* 9  */ "Auf einem guten Weg. Weiter so.",
+          /* 10 */ "Auf einem guten Weg. Weiter so.",
+          /* 11 */ "Auf einem guten Weg. Weiter so.",
+          /* 12 */ "Auf einem guten Weg. Weiter so.",
+          /* 13 */ "Auf einem guten Weg. Weiter so.",
+          /* 14 */ "Du bist auf dem besten Weg zum AI-Detektiv.",
+          /* 15 */ "Du bist auf dem besten Weg zum AI-Detektiv.",
+          /* 16 */ "Unglaublich! Du bist ein AI-Spürhund!",
+          /* 17 */ "Unglaublich! Du bist ein AI-Spürhund!",
+          /* 18 */ "Meisterhaft! Ist da etwa eine echte AI am Werk?",
+          /* 19 */ "Fast Perfektion! Du hast sie fast alle entlarvt!",
+          /* 20 */ "Absolute Perfektion! Unmenschlich gut! Bist du sicher, dass du keine AI bist?"
       ];
 
       function showQuestion() {
