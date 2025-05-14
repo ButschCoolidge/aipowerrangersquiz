@@ -2,6 +2,18 @@
 Cheater!
 Cheater!
 Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
+Cheater!
 #   .d8888b.  888                        888                     888       
 #  d88P  Y88b 888                        888                     888       
 #  888    888 888                        888                     888       
@@ -15,12 +27,10 @@ Cheater!
 #                                                      -->
 
 <!DOCTYPE html>
-<html lang="de">
-<head>
+<html lang="en"> <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI or not AI?</title>
-  <style>
+  <title>AI or not AI?</title> <style>
     /* ASCII-Canvas */
     #ascii-canvas {
       position: fixed; top: 0; left: 0;
@@ -156,21 +166,14 @@ Cheater!
 <body>
   <canvas id="ascii-canvas"></canvas>
   <div id="quiz-container">
-    <h1>AI or not AI?</h1>
-    <div id="score">Punktzahl: <span id="score-value">0</span></div>
-    <div id="question-number"></div>
-    <img id="question-image" src="" alt="Quiz Bild">
+    <h1>AI or not AI?</h1> <div id="score">Score: <span id="score-value">0</span></div> <div id="question-number"></div>
     <div id="buttons">
       <button id="ai-btn">AI</button>
       <button id="monster-btn">NOT AI</button>
     </div>
     <div id="info"></div>
-    <button id="next-btn">Nächstes</button>
-    <button id="restart-btn">Neu starten</button>
-  </div>
-  <a id="imprint-link" href="imprint.html" target="_blank">Impressum</a>
-
-  <script>
+    <button id="next-btn">Next</button> <button id="restart-btn">Restart</button> </div>
+  <a id="imprint-link" href="imprint.html" target="_blank">Imprint</a> <script>
     document.addEventListener('DOMContentLoaded', () => {
 
       // --- ASCII-Canvas & Maske (1:1 Kopie aus Impressum.html Script Block) ---
@@ -222,14 +225,14 @@ Cheater!
       } else {
           maskGif.onload = draw;
           maskGif.onerror = () => {
-              console.error("Maskenbild konnte nicht geladen werden oder ist nicht vorhanden. ASCII-Effekt wird ohne Maske gezeichnet.");
-              draw(); // Zeichne trotzdem, aber ohne Maske
+              console.error("Mask image could not be loaded or is not present. ASCII effect will be drawn without mask."); // Log übersetzt
+              draw(); // Draw anyway, but without mask
           }
       }
       // --- Ende ASCII-Canvas & Masken Logik ---
 
 
-      // --- Quiz-Logik (Original aus index.html) ---
+      // --- Quiz Logic ---
       const imageConfig = [
         {filename:'images00001.jpg',answer:'monster',name:'Loyax',url:'https://powerrangers.fandom.com/wiki/Loyax'},
         {filename:'images00002.jpg',answer:'monster',name:'Mad Mike',url:'https://powerrangers.fandom.com/wiki/Mad_Mike_the_Pizza_Chef'},
@@ -290,32 +293,32 @@ Cheater!
           const canPickMo = tempMoSelected.length > 0;
 
           if (!canPickAi && !canPickMo) {
-              console.error("Sequenzerstellung: Beide Pools sind leer, bevor alle Fragen generiert wurden. Index:", i);
+              console.error("Sequence generation: Both pools are empty before all questions were generated. Index:", i); // Log übersetzt
               break;
           }
 
           if (currentRun >= MAX_CONSECUTIVE_RUN) {
-              choiceIsAi = (lastAnswerType === 'monster'); // Erzwinge Wechsel
-              if ((choiceIsAi && !canPickAi) || (!choiceIsAi && !canPickMo)) { // Wenn erzwungene Wahl nicht möglich
-                  choiceIsAi = !choiceIsAi; // Nimm den anderen Typ (wenn möglich)
+              choiceIsAi = (lastAnswerType === 'monster'); // Force switch
+              if ((choiceIsAi && !canPickAi) || (!choiceIsAi && !canPickMo)) { // If forced choice not possible
+                  choiceIsAi = !choiceIsAi; // Take the other type (if possible)
               }
           } else {
               if (!canPickAi) choiceIsAi = false;
               else if (!canPickMo) choiceIsAi = true;
-              else choiceIsAi = Math.random() < (tempAiSelected.length / (tempAiSelected.length + tempMoSelected.length)); // Gewichteter Zufall
+              else choiceIsAi = Math.random() < (tempAiSelected.length / (tempAiSelected.length + tempMoSelected.length)); // Weighted random
           }
 
           let currentItem;
           if (choiceIsAi) {
               if (canPickAi) currentItem = tempAiSelected.pop();
-              else currentItem = tempMoSelected.pop(); // Fallback, wenn AI gewählt, aber leer
+              else currentItem = tempMoSelected.pop(); // Fallback if AI chosen but empty
           } else {
               if (canPickMo) currentItem = tempMoSelected.pop();
-              else currentItem = tempAiSelected.pop(); // Fallback, wenn Monster gewählt, aber leer
+              else currentItem = tempAiSelected.pop(); // Fallback if Monster chosen but empty
           }
 
           if (!currentItem) {
-              console.error(`Sequenzerstellung: Konnte kein Item für Frage ${i+1} auswählen.`);
+              console.error(`Sequence generation: Could not select item for question ${i+1}.`); // Log übersetzt
               break;
           }
           generatedSequence.push(currentItem);
@@ -327,13 +330,14 @@ Cheater!
       const quizDataFinal = generatedSequence;
       const quizContainerEl = document.getElementById('quiz-container');
 
+      // Error message translated
       if (quizDataFinal.length !== totalQuestions) {
-          quizContainerEl.innerHTML = `<h1>Fehler</h1><p>Das Quiz konnte nicht korrekt initialisiert werden (nur ${quizDataFinal.length}/${totalQuestions} Fragen). Bitte laden Sie die Seite neu.</p><button onclick="location.reload()">Neu laden</button>`;
-          return; // Stoppt weitere Ausführung
+          quizContainerEl.innerHTML = `<h1>Error</h1><p>The quiz could not be initialized correctly (only ${quizDataFinal.length}/${totalQuestions} questions). Please reload the page.</p><button onclick="location.reload()">Reload</button>`;
+          return; // Stop further execution
       }
 
 
-      // Quiz-Logik Fortsetzung
+      // Quiz Logic Continued
       let currentQuestionIndex = 0, score = 0;
       const imgEl = document.getElementById('question-image'),
             scoreEl = document.getElementById('score-value'),
@@ -345,98 +349,80 @@ Cheater!
             restartBtn = document.getElementById('restart-btn'),
             buttonsDiv = document.getElementById('buttons');
 
+      // End messages translated
       const endMessages = [
-          /* 0  */ "Oje, kein Treffer. Aber hey, Übung macht den Meister!",
-          /* 1  */ "Ein Punkt ist ein Anfang! Probier's gleich nochmal.",
-          /* 2  */ "Nicht schlecht! Du hast ein paar erkannt.",
-          /* 3  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
-          /* 4  */ "Gut gemacht! Du liegst schon öfter richtig.",
-          /* 5  */ "Stark! Du bist auf dem besten Weg zum AI-Detektiv.",
-          /* 6  */ "Sehr gut! Die Hälfte ist geschafft, weiter so!",
-          /* 7  */ "Beeindruckend! Du hast ein gutes Gespür.",
-          /* 8  */ "Klasse Leistung! Die meisten erkennst du schon.",
-          /* 9  */ "Ausgezeichnet! Du bist ein wahrer Kenner.",
-          /* 10 */ "Wow! Nur noch wenige Fehler, fast perfekt!",
-          /* 11 */ "Unglaublich! Du bist ein AI-Spürhund!",
-          /* 12 */ "Phänomenal! Kaum zu glauben, wie gut du bist!",
-          /* 13 */ "Meisterhaft! Ist da etwa eine echte AI am Werk?",
-          /* 14 */ "Perfektion! Du hast sie alle entlarvt! Oder bist du selbst eine AI?",
-          /* 15 */ "Absolute Perfektion! Unmenschlich gut! Bist du sicher, dass du keine AI bist?"
+          /* 0  */ "Oh dear, no correct answers. But hey, practice makes perfect!",
+          /* 1  */ "One point is a start! Try again right away.",
+          /* 2  */ "Not bad! You recognized a few.",
+          /* 3  */ "Getting better! You're starting to develop an eye for it.",
+          /* 4  */ "Well done! You're getting it right more often.",
+          /* 5  */ "Great! You're well on your way to becoming an AI detective.",
+          /* 6  */ "Very good! Halfway there, keep it up!",
+          /* 7  */ "Impressive! You have a good intuition.",
+          /* 8  */ "Excellent performance! You're recognizing most of them.",
+          /* 9  */ "Outstanding! You're a true connoisseur.",
+          /* 10 */ "Wow! Only a few mistakes, almost perfect!",
+          /* 11 */ "Incredible! You're an AI bloodhound!",
+          /* 12 */ "Phenomenal! Hard to believe how good you are!",
+          /* 13 */ "Masterful! Are you perhaps a real AI at work?",
+          /* 14 */ "Perfection! You unmasked them all! Or are you an AI yourself?",
+          /* 15 */ "Absolute perfection! Unhumanly good! Are you sure you're not an AI?"
       ];
 
-      function showQuestion() {
-        if (currentQuestionIndex >= quizDataFinal.length) {
-            endQuiz();
-            return;
-        }
-        const currentQuizItem = quizDataFinal[currentQuestionIndex];
-        if (!currentQuizItem || !currentQuizItem.filename) {
-            console.error("Ungültiges Quiz-Item bei Index:", currentQuestionIndex, currentQuizItem);
-            infoEl.textContent = "Fehler: Frage konnte nicht geladen werden.";
-            endQuiz("Fehler beim Laden der Frage."); // Quiz mit Fehlermeldung beenden
-            return;
-        }
-
-        imgEl.style.display = 'block';
-        imgEl.src = `images/${currentQuizItem.filename}`;
-        imgEl.onerror = () => {
-            console.error(`Bild konnte nicht geladen werden: images/${currentQuizItem.filename}`);
-            infoEl.textContent = `Fehler: Bild "${currentQuizItem.filename}" konnte nicht geladen werden. Frage wird übersprungen.`;
-            imgEl.style.display = 'none'; // Bild ausblenden bei Fehler
-            aiBtn.disabled = true;
-            moBtn.disabled = true;
-            nextBtn.style.display = 'inline-block'; // "Nächstes" anzeigen, um fortzufahren
-            if (currentQuestionIndex >= quizDataFinal.length - 1) {
-                 nextBtn.textContent = "Ergebnis anzeigen"; // Wenn es die letzte Frage war
-            }
-        };
-        imgEl.onload = () => {
-            aiBtn.disabled = false; moBtn.disabled = false;
-        }
-
-        qNumEl.textContent = `Frage ${currentQuestionIndex + 1} von ${totalQuestions}`;
-        if (imgEl.style.display !== 'none') { // Buttons nur aktivieren, wenn Bild (potenziell) geladen wird
-            aiBtn.disabled = false; moBtn.disabled = false;
-        }
-        aiBtn.style.display = 'inline-block'; moBtn.style.display = 'inline-block';
-        buttonsDiv.style.display = 'block';
-        infoEl.textContent = '';
-        nextBtn.style.display = 'none';
-        nextBtn.textContent = "Nächstes"; // Zurücksetzen, falls es "Ergebnis anzeigen" war
-        restartBtn.style.display = 'none';
-        scoreEl.textContent = score;
-      }
-
+      // --- CORRECTED handleAnswer function ---
       function handleAnswer(choice) {
-        aiBtn.disabled = true; moBtn.disabled = true;
+        // Disable buttons immediately after an answer is given
+        aiBtn.disabled = true;
+        moBtn.disabled = true;
+
         const currentQuizItem = quizDataFinal[currentQuestionIndex];
-        let isCorrect = false;
+        const correctAnswer = currentQuizItem.answer;
+        // Check if it was a 'monster' and if details are available for linking
+        const detailsAvailableForMonster = (correctAnswer === 'monster' && currentQuizItem.name && currentQuizItem.url);
 
-        if (choice === 'ai' && currentQuizItem.answer === 'ai') isCorrect = true;
-        else if (choice === 'monster' && currentQuizItem.answer === 'monster') isCorrect = true;
+        let infoHtml = ''; // Will hold the detailed info (like the monster link or "It was AI.")
+        let feedbackText = ''; // Will hold "Correct!" or "Wrong!"
 
-        if (isCorrect) {
+        if (choice === correctAnswer) {
+          // User chose the correct answer
           score++;
           scoreEl.textContent = score;
-          infoEl.textContent = 'Richtig! ';
-          if(currentQuizItem.answer === 'monster' && currentQuizItem.name && currentQuizItem.url) {
-              infoEl.innerHTML += `NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizItem.name}</a>`;
+          feedbackText = 'Correct!';
+
+          if (detailsAvailableForMonster) {
+              // Correctly identified a monster, show monster details
+              infoHtml = `NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizItem.name}</a>`;
           } else {
-              infoEl.textContent += (currentQuizItem.answer === 'ai' ? 'AI.' : 'NOT AI.');
+              // Correctly identified AI
+              infoHtml = 'It was AI.';
           }
+
         } else {
-          infoEl.textContent = 'Falsch! ';
-            if(currentQuizItem.answer === 'monster' && currentQuizItem.name && currentQuizItem.url) {
-              infoEl.innerHTML += `Es war NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizitem.name}</a>`;
+          // User chose the wrong answer
+          feedbackText = 'Wrong!';
+
+          // Regardless of what the user chose, show what the CORRECT answer was
+          if (detailsAvailableForMonster) {
+              // Should have been a monster, show monster details and link
+              infoHtml = `It was NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizItem.name}</a>`;
           } else {
-              infoEl.textContent += (currentQuizItem.answer === 'ai' ? 'Es war AI.' : 'Es war NOT AI.');
+              // Should have been AI
+              infoHtml = 'It was AI.';
           }
         }
+
+        // Combine feedback text and info HTML, then update the info element
+        infoEl.innerHTML = feedbackText + ' ' + infoHtml; // Use innerHTML to render the link
+
+        // Always show the "Next" or "Show Results" button after any answer
         nextBtn.style.display = 'inline-block';
-        if (currentQuestionIndex >= quizDataFinal.length - 1) { // Letzte Frage beantwortet
-             nextBtn.textContent = "Ergebnis anzeigen";
+        if (currentQuestionIndex >= quizDataFinal.length - 1) {
+             // If this was the last question, change the button text
+             nextBtn.textContent = "Show Results";
         }
       }
+      // --- END CORRECTED handleAnswer function ---
+
 
       aiBtn.addEventListener('click', () => handleAnswer('ai'));
       moBtn.addEventListener('click', () => handleAnswer('monster'));
@@ -444,31 +430,31 @@ Cheater!
       nextBtn.addEventListener('click', () => {
         currentQuestionIndex++;
         if (currentQuestionIndex < totalQuestions) {
-          showQuestion();
+          showQuestion(); // <--- HIER MUSS showQuestion (GROSS Q) stehen!
         } else {
-          endQuiz();
+          endQuiz(); // End the quiz if all questions are done
         }
       });
 
       function endQuiz(customMessage = "") {
-        buttonsDiv.style.display = 'none';
-        nextBtn.style.display = 'none';
-        imgEl.style.display = 'none';
-        qNumEl.textContent = "Quiz beendet!";
+        buttonsDiv.style.display = 'none'; // Hide the answer buttons
+        nextBtn.style.display = 'none'; // Hide the Next/Show Results button
+        imgEl.style.display = 'none'; // Hide the image
+        qNumEl.textContent = "Quiz finished!"; // Set the header text
 
-        // Sicherstellen, dass eine gültige Nachricht für den Punktestand vorhanden ist
-        const scoreMessage = endMessages[score] !== undefined ? endMessages[score] : (endMessages[endMessages.length -1] || "Gut gemacht!");
+        // Ensure a valid message for the score exists
+        const scoreMessage = endMessages[score] !== undefined ? endMessages[score] : (endMessages[endMessages.length -1] || "Well done!"); // Fallback message
 
-        const finalMessage = customMessage || `${score} / ${totalQuestions} richtig – ${scoreMessage}`;
-        infoEl.textContent = finalMessage;
-        restartBtn.style.display = 'inline-block';
+        const finalMessage = customMessage || `${score} / ${totalQuestions} correct – ${scoreMessage}`; // Final score message
+        infoEl.textContent = finalMessage; // Display the final message
+        restartBtn.style.display = 'inline-block'; // Show the restart button
       }
 
-      restartBtn.addEventListener('click', () => location.reload());
+      restartBtn.addEventListener('click', () => location.reload()); // Reload page to restart
 
-      // Quiz starten
-      showQuestion();
-      // --- Ende Quiz-Logik ---
+      // Start Quiz
+      showQuestion(); // <--- HIER MUSS showQuestion (GROSS Q) stehen! Start the first question when the page loads
+      // --- End Quiz Logic ---
 
     });
   </script>
