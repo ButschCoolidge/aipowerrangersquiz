@@ -36,25 +36,54 @@ Cheater!
     /* ASCII-Canvas */
     #ascii-canvas {
       position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%; z-index: 0;
+      width: 100%; height: 100%; z-index: -1; /* Setze z-index auf -1 wie im Impressum */
       pointer-events: none; /* Wichtig, damit Klicks durchgehen */
       background: #000; /* Fallback Hintergrundfarbe */
     }
     body {
       margin: 0; padding: 0;
       display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; overflow: hidden;
-      font-family: system-ui, sans-serif;
-      background: #000; /* Basis Hintergrundfarbe */
-      color: #333; /* Standardtextfarbe für Body */
+      min-height: 100vh; /* Nutzt die volle Viewport-Höhe */
+      /* overflow: hidden; /* Kann Probleme mit Scrollen verursachen, je nach Inhalt. Lassen wir es mal weg, falls Inhalt scrollbar wird */ */
+
+      /* --- BASIS SCHRIFTART (sollte konsistent sein, falls Container-Schrift nicht greift) --- */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Gängige serifenlose Schriften */
+      /* --- ENDE BASIS SCHRIFTART --- */
+
+      background: #121212; /* Gleicher dunkler Basis-Hintergrund wie im Impressum */
+      color: #e0e0e0; /* Gleiche Standardtextfarbe wie im Impressum */
+      padding-bottom: 40px; /* Platz für den Impressum-Link */
     }
-    /* Quiz-Container */
+    /* Quiz-Container - Angepasste Farben und Leuchten wie im Impressum */
     #quiz-container {
       position: relative; z-index: 1; /* Über dem Canvas */
-      background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); /* Transparenter Hintergrund mit Blur */
+      /* Hintergrund und Border angepasst an Impressum */
+      background: rgba(25, 25, 25, 0.85); /* Halbtransparenter dunkler Hintergrund */
+      border: 1px solid #333; /* Rahmenfarbe */
+      /* Box-Shadow (Leuchten) angepasst an Impressum */
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.25); /* Grünes/Cyan Leuchten */
+      color: #ccc; /* Allgemeine Schriftfarbe im Container */
+
+      backdrop-filter: blur(4px); /* Blur Effekt beibehalten */
       padding: 2rem; border-radius: 1rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
       text-align: center; width: 320px;
+
+      /* --- SCHRIFTART FÜR DEN CONTAINER UND DIE MEISTEN INHALTE --- */
+      font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift für Inhalt */
+      /* --- ENDE SCHRIFTART FÜR DEN CONTAINER --- */
+    }
+    /* H1 im Quiz-Container angepasst an H2 im Impressum */
+    #quiz-container h1 {
+        color: #00ffc8; /* Farbe der H1-Überschrift */
+        border-bottom: 1px solid #00ffc8; /* Linie unter H1 */
+        padding-bottom: 8px;
+        margin-top: 0;
+        font-size: 1.8em;
+        margin-bottom: 1rem; /* Abstand nach unten */
+
+        /* --- SCHRIFTART EXPLIZIT FÜR H1 (sollte jetzt definitiv greifen) --- */
+        font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift für H1 */
+        /* --- ENDE SCHRIFTART EXPLIZIT FÜR H1 --- */
     }
     #quiz-container img {
       max-width: 100%; height: auto;
@@ -63,36 +92,77 @@ Cheater!
       border-radius: 0.5rem; margin: 1rem auto;
       display: block;
     }
-    #question-number { margin-bottom: 1rem; font-weight: bold; }
+    #question-number { margin-bottom: 1rem; font-weight: bold; /* Farbe kommt von #quiz-container color */ }
+
+    /* Button Farben angepasst an das Schema */
     button {
       padding: 0.8rem 1.2rem; margin: 0.5rem;
       font-size: 1rem; border: none; border-radius: 0.5rem;
-      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      background: #007bff; color: #fff; transition: transform 0.15s, background-color 0.15s;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Dunklerer Schatten für Buttons */
+
+      /* Farben angepasst */
+      background: #222; /* Dunkler Button Hintergrund */
+      color: #00ffc8; /* Textfarbe passend zum Leuchten */
+      border: 1px solid #00ffc8; /* Rahmen passend zum Text */
+
+      transition: transform 0.15s, background-color 0.15s, color 0.15s, border-color 0.15s;
+
+      /* --- SCHRIFTART FÜR BUTTONS (optional, erbt sonst vom container) --- */
+      font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift für Buttons */
+      /* --- ENDE SCHRIFTART FÜR BUTTONS --- */
     }
-    button:hover { transform: translateY(-2px); background-color: #0056b3; }
-    button:disabled { background-color: #6c757d; cursor: not-allowed; transform: translateY(0); }
-    #info { margin: 1rem 0; font-size: 1rem; min-height: 2.5em; /* Platz für mehrzeilige Infos */ }
+    button:hover {
+      transform: translateY(-2px);
+      /* Hover Farben angepasst */
+      background-color: #00ffc8; /* Beim Hover leuchtend grüner Hintergrund */
+      color: #111; /* Dunkle Schrift auf leuchtendem Hintergrund */
+      border-color: #00ffc8; /* Rahmen bleibt gleich */
+    }
+    button:disabled {
+      background-color: #6c757d;
+      color: #ccc;
+      border-color: #6c757d;
+      cursor: not-allowed;
+      transform: translateY(0);
+    }
+
+    #info { margin: 1rem 0; font-size: 1rem; min-height: 2.5em; /* Platz für mehrzeilige Infos */ /* Farbe kommt von #quiz-container color */ }
     #next-btn, #restart-btn { display: none; }
 
-    /* IMPRESSUM STYLING */
+    /* IMPRESSUM LINK STYLING - Farbe angepasst an H1 */
     #imprint-link {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 0.85rem;
-      color: #ccc;
+      /* --- FARBE ANGEPASST AN H1 --- */
+      color: #00ffc8; /* Gleiche Farbe wie H1 im Quiz-Container */
+      /* --- ENDE FARBE ANGEPASST AN H1 --- */
       text-decoration: none;
-      z-index: 10; /* Über dem Canvas und Quiz */
+      z-index: 10;
       padding: 5px 10px;
       background-color: rgba(0, 0, 0, 0.5);
       border-radius: 5px;
+
+      /* --- SCHRIFTART FÜR IMPRESSUM LINK (optional, erbt sonst vom body oder container) --- */
+      font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift */
+      /* --- ENDE SCHRIFTART FÜR IMPRESSUM LINK --- */
     }
     #imprint-link:hover {
       text-decoration: underline;
-      color: #fff;
+      color: #00cc99; /* Etwas abweichender Ton für Hover */
     }
+
+    /* Zusätzliche Farben für Text-Elemente innerhalb des Quiz-Containers, falls benötigt */
+    #quiz-container p,
+    #quiz-container div,
+    #quiz-container span { /* Span hinzugefügt, da Punktzahl in einem Span ist */
+        color: #ccc; /* Stellt sicher, dass Text innerhalb des Containers die richtige Farbe hat */
+        /* Diese Elemente erben die font-family vom #quiz-container */
+    }
+
   </style>
 </head>
 <body>
@@ -110,19 +180,20 @@ Cheater!
     <button id="next-btn">Nächstes</button>
     <button id="restart-btn">Neu starten</button>
   </div>
-  <a id="imprint-link" href="imprint.html" target="_blank" style="color: #178;">Impressum</a>
+  <a id="imprint-link" href="imprint.html" target="_blank">Impressum</a>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-      // --- Verbesserter ASCII-Canvas & Masken Logik ---
-      // Wie besprochen, diese Version handhabt das Laden der Maske robuster.
+      // --- ASCII-Canvas & Maske (1:1 Kopie aus Impressum.html Script Block) ---
+      // Dieser Code-Block wurde komplett aus dem <script> Bereich der Impressum.html übernommen.
       const canvas = document.getElementById('ascii-canvas'), ctx = canvas.getContext('2d');
       let w, h, cols, rows, time = 0;
       const fontSize = 12, charsSet = ' .:-=+*#%@';
       const maskGif = new Image();
       // WICHTIG: Stellen Sie sicher, dass diese Bilddatei existiert und der Pfad korrekt ist!
-      maskGif.src = 'images/mask.gif'; // Beispielpfad, bitte anpassen!
+      // Wenn Sie keine Maske verwenden möchten, können Sie die Zeilen mit 'maskGif' und 'ctx.drawImage' entfernen/auskommentieren.
+      maskGif.src = 'images/mask.gif'; // Beispielpfad, bitte anpassen! Ggf. entfernen, wenn nicht benötigt.
 
       function resizeC() {
           w = canvas.width = window.innerWidth;
@@ -133,59 +204,44 @@ Cheater!
       window.addEventListener('resize', resizeC);
       resizeC();
 
-      function drawAscii() {
+      // Beachte: Die Funktion heißt hier 'draw' wie im ursprünglichen Impressum-Code
+      function draw() {
           ctx.clearRect(0, 0, w, h);
-          // Die Farbe der ASCII-Zeichen
-          ctx.fillStyle = 'rgba(0,255,200,0.1)';
+          ctx.fillStyle = 'rgba(0,255,200,0.1)'; // Farbe der ASCII-Zeichen
           ctx.font = `${fontSize}px monospace`;
           for (let y = 0; y < rows; y++) {
-              const offs = Math.sin(y * 0.2 + time) * 20; // Horizontaler Wellen-Effekt
+              const offs = Math.sin(y * 0.2 + time) * 20;
               for (let x = 0; x < cols; x++) {
                   ctx.fillText(charsSet.charAt(Math.floor(Math.random() * charsSet.length)), x * fontSize + offs, y * fontSize + fontSize);
               }
           }
           // Maske nur anwenden, wenn das Bild geladen und vollständig ist
-          // Nutzt globalCompositeOperation, um nur dort zu zeichnen, wo die Maske deckend ist
           if (maskGif.complete && maskGif.naturalWidth !== 0) {
               ctx.globalCompositeOperation = 'destination-in';
-              ctx.drawImage(maskGif, 0, 0, w, h); // Zeichne die Maske
-              ctx.globalCompositeOperation = 'source-over'; // Zurücksetzen für den nächsten Zeichenvorgang
+              ctx.drawImage(maskGif, 0, 0, w, h);
+              ctx.globalCompositeOperation = 'source-over';
           }
-          time += 0.01; // Zeit für Animation erhöhen
-          canvas.__animationFrameId = requestAnimationFrame(drawAscii); // Nächsten Frame anfordern und ID speichern (optional, zur Vermeidung von Doppel-Starts)
+          time += 0.01;
+          requestAnimationFrame(draw); // Rufe 'draw' rekursiv auf
       }
 
-      // Initialisierungs-Handling: Startet die Animation, stellt sicher, dass sie auch ohne Maske läuft
-      const startDrawing = () => {
-          // Vermeide doppeltes Starten der Animation
-          if (canvas.__animationFrameId) {
-              // console.log("Animation läuft bereits. Starte nicht neu."); // Debug-Ausgabe
-              return;
+      // Startet das Zeichnen, sobald das Maskenbild geladen ist (oder sofort, wenn es gecached ist)
+      // Wenn Sie maskGif.src auskommentiert haben, rufen Sie draw() direkt auf.
+      if (maskGif.src.endsWith('undefined') || !maskGif.src.includes("images/mask.gif")) { // Fallback wenn maskGif.src leer oder nicht gesetzt
+          draw();
+      } else if (maskGif.complete) {
+          draw();
+      } else {
+          maskGif.onload = draw;
+          maskGif.onerror = () => {
+              console.error("Maskenbild konnte nicht geladen werden oder ist nicht vorhanden. ASCII-Effekt wird ohne Maske gezeichnet.");
+              draw(); // Zeichne trotzdem, aber ohne Maske
           }
-          // console.log("Starte ASCII-Zeichnung."); // Debug-Ausgabe
-          drawAscii(); // Startet den ersten Frame
-      };
-
-      // Warten auf das Laden der Maske ODER behandeln, falls sie fehlschlägt
-      maskGif.onload = startDrawing; // Startet, wenn die Maske erfolgreich geladen ist
-      maskGif.onerror = () => { // Startet, wenn die Maske NICHT geladen werden kann (z.B. Datei fehlt)
-          console.warn("Maskenbild konnte nicht geladen werden oder ist nicht vorhanden ('images/mask.gif'). ASCII-Effekt wird ohne Maske gezeichnet.");
-          startDrawing(); // Startet die Animation trotzdem (ohne Maskierung)
-      };
-
-      // Fallback: Prüfen, ob das Bild bereits im Cache ist, bevor Event-Listener registriert sind
-      if (maskGif.complete && maskGif.naturalWidth !== 0) {
-           // console.log("Maskenbild war bereits im Cache."); // Debug-Ausgabe
-           startDrawing();
-      } else if (maskGif.src === '' || !maskGif.src.includes("images/mask.gif")) {
-           // Zusätzlicher Fallback, wenn der maskGif.src Pfad nicht korrekt gesetzt wurde
-           console.warn("Maskenbild-Pfad ist leer oder ungültig. ASCII-Effekt wird ohne Maske gezeichnet.");
-           startDrawing();
       }
-      // --- Ende verbesserte ASCII-Canvas Logik ---
+      // --- Ende ASCII-Canvas & Masken Logik ---
 
 
-      // --- Quiz-Logik (Unverändert) ---
+      // --- Quiz-Logik (Original aus index.html) ---
       const imageConfig = [
         {filename:'images00001.jpg',answer:'monster',name:'Loyax',url:'https://powerrangers.fandom.com/wiki/Loyax'},
         {filename:'images00002.jpg',answer:'monster',name:'Mad Mike',url:'https://powerrangers.fandom.com/wiki/Mad_Mike_the_Pizza_Chef'},
@@ -383,7 +439,7 @@ Cheater!
         } else {
           infoEl.textContent = 'Falsch! ';
             if(currentQuizItem.answer === 'monster' && currentQuizItem.name && currentQuizItem.url) {
-              infoEl.innerHTML += `Es war NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizItem.name}</a>`;
+              infoEl.innerHTML += `Es war NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizitem.name}</a>`;
           } else {
               infoEl.textContent += (currentQuizItem.answer === 'ai' ? 'Es war AI.' : 'Es war NOT AI.');
           }
