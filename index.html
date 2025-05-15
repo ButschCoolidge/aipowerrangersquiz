@@ -36,133 +36,77 @@ Cheater!
     /* ASCII-Canvas */
     #ascii-canvas {
       position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%; z-index: -1; /* Setze z-index auf -1 wie im Impressum */
-      pointer-events: none; /* Wichtig, damit Klicks durchgehen */
-      background: #000; /* Fallback Hintergrundfarbe */
+      width: 100%; height: 100%; z-index: -1;
+      pointer-events: none;
+      background: #000;
     }
     body {
       margin: 0; padding: 0;
       display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; /* Nutzt die volle Viewport-Höhe */
-      /* overflow: hidden; /* Kann Probleme mit Scrollen verursachen, je nach Inhalt. Lassen wir es mal weg, falls Inhalt scrollbar wird */ */
-
-      /* --- BASIS SCHRIFTART (sollte konsistent sein, falls Container-Schrift nicht greift) --- */
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Gängige serifenlose Schriften */
-      /* --- ENDE BASIS SCHRIFTART --- */
-
-      background: #121212; /* Gleicher dunkler Basis-Hintergrund wie im Impressum */
-      color: #e0e0e0; /* Gleiche Standardtextfarbe wie im Impressum */
-      padding-bottom: 40px; /* Platz für den Impressum-Link */
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      padding-bottom: 40px;
     }
-    /* Quiz-Container - Angepasste Farben und Leuchten wie im Impressum */
     #quiz-container {
-      position: relative; z-index: 1; /* Über dem Canvas */
-      /* Hintergrund und Border angepasst an Impressum */
-      background: rgba(25, 25, 25, 0.85); /* Halbtransparenter dunkler Hintergrund */
-      border: 1px solid #333; /* Rahmenfarbe */
-      /* Box-Shadow (Leuchten) angepasst an Impressum */
-      box-shadow: 0 0 20px rgba(0, 255, 200, 0.25); /* Grünes/Cyan Leuchten */
-      color: #ccc; /* Allgemeine Schriftfarbe im Container */
-
-      backdrop-filter: blur(4px); /* Blur Effekt beibehalten */
+      position: relative; z-index: 1;
+      background: rgba(25, 25, 25, 0.85);
+      border: 1px solid #333;
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.25);
+      color: #ccc;
+      backdrop-filter: blur(4px);
       padding: 2rem; border-radius: 1rem;
       text-align: center; width: 320px;
-
-      /* --- SCHRIFTART FÜR DEN CONTAINER UND DIE MEISTEN INHALTE --- */
-      font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift für Inhalt */
-      /* --- ENDE SCHRIFTART FÜR DEN CONTAINER --- */
+      font-family: Arial, Verdana, sans-serif;
     }
-    /* H1 im Quiz-Container angepasst an H2 im Impressum */
     #quiz-container h1 {
-        color: #00ffc8; /* Farbe der H1-Überschrift */
-        border-bottom: 1px solid #00ffc8; /* Linie unter H1 */
-        padding-bottom: 8px;
-        margin-top: 0;
-        font-size: 1.8em;
-        margin-bottom: 1rem; /* Abstand nach unten */
-
-        /* --- SCHRIFTART EXPLIZIT FÜR H1 (sollte jetzt definitiv greifen) --- */
-        font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift für H1 */
-        /* --- ENDE SCHRIFTART EXPLIZIT FÜR H1 --- */
+      color: #00ffc8;
+      border-bottom: 1px solid #00ffc8;
+      padding-bottom: 8px;
+      margin-top: 0; margin-bottom: 1rem;
+      font-size: 1.8em;
+      font-family: Arial, Verdana, sans-serif;
     }
     #quiz-container img {
       max-width: 100%; height: auto;
-      max-height: 250px; /* Begrenzung der Bildhöhe */
+      max-height: 250px;
       object-fit: contain;
-      border-radius: 0.5rem; margin: 1rem auto;
+      border-radius: 0.5rem;
+      margin: 1rem auto;
       display: block;
     }
-    #question-number { margin-bottom: 1rem; font-weight: bold; /* Farbe kommt von #quiz-container color */ }
-
-    /* Button Farben angepasst an das Schema */
+    #question-number { margin-bottom: 1rem; font-weight: bold; }
     button {
       padding: 0.8rem 1.2rem; margin: 0.5rem;
       font-size: 1rem; border: none; border-radius: 0.5rem;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Dunklerer Schatten für Buttons */
-
-      /* Farben angepasst */
-      background: #222; /* Dunkler Button Hintergrund */
-      color: #00ffc8; /* Textfarbe passend zum Leuchten */
-      border: 1px solid #00ffc8; /* Rahmen passend zum Text */
-
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      background: #222; color: #00ffc8; border: 1px solid #00ffc8;
       transition: transform 0.15s, background-color 0.15s, color 0.15s, border-color 0.15s;
-
-      /* --- SCHRIFTART FÜR BUTTONS (optional, erbt sonst vom container) --- */
-      font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift für Buttons */
-      /* --- ENDE SCHRIFTART FÜR BUTTONS --- */
+      font-family: Arial, Verdana, sans-serif;
     }
     button:hover {
       transform: translateY(-2px);
-      /* Hover Farben angepasst */
-      background-color: #00ffc8; /* Beim Hover leuchtend grüner Hintergrund */
-      color: #111; /* Dunkle Schrift auf leuchtendem Hintergrund */
-      border-color: #00ffc8; /* Rahmen bleibt gleich */
+      background-color: #00ffc8; color: #111; border-color: #00ffc8;
     }
     button:disabled {
-      background-color: #6c757d;
-      color: #ccc;
-      border-color: #6c757d;
-      cursor: not-allowed;
-      transform: translateY(0);
+      background-color: #6c757d; color: #ccc; border-color: #6c757d;
+      cursor: not-allowed; transform: translateY(0);
     }
-
-    #info { margin: 1rem 0; font-size: 1rem; min-height: 2.5em; /* Platz für mehrzeilige Infos */ /* Farbe kommt von #quiz-container color */ }
+    #info { margin: 1rem 0; font-size: 1rem; min-height: 2.5em; }
     #next-btn, #restart-btn { display: none; }
-
-    /* IMPRESSUM LINK STYLING - Farbe angepasst an H1 */
     #imprint-link {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
+      position: fixed; bottom: 20px; left: 50%;
       transform: translateX(-50%);
-      font-size: 0.85rem;
-      /* --- FARBE ANGEPASST AN H1 --- */
-      color: #00ffc8; /* Gleiche Farbe wie H1 im Quiz-Container */
-      /* --- ENDE FARBE ANGEPASST AN H1 --- */
-      text-decoration: none;
-      z-index: 10;
-      padding: 5px 10px;
-      background-color: rgba(0, 0, 0, 0.5);
-      border-radius: 5px;
-
-      /* --- SCHRIFTART FÜR IMPRESSUM LINK (optional, erbt sonst vom body oder container) --- */
-      font-family: Arial, Verdana, sans-serif; /* Konsistente serifenlose Schrift */
-      /* --- ENDE SCHRIFTART FÜR IMPRESSUM LINK --- */
+      font-size: 0.85rem; color: #00ffc8;
+      text-decoration: none; z-index: 10;
+      padding: 5px 10px; background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 5px; font-family: Arial, Verdana, sans-serif;
     }
     #imprint-link:hover {
-      text-decoration: underline;
-      color: #00cc99; /* Etwas abweichender Ton für Hover */
+      text-decoration: underline; color: #00cc99;
     }
-
-    /* Zusätzliche Farben für Text-Elemente innerhalb des Quiz-Containers, falls benötigt */
-    #quiz-container p,
-    #quiz-container div,
-    #quiz-container span { /* Span hinzugefügt, da Punktzahl in einem Span ist */
-        color: #ccc; /* Stellt sicher, dass Text innerhalb des Containers die richtige Farbe hat */
-        /* Diese Elemente erben die font-family vom #quiz-container */
-    }
-
   </style>
 </head>
 <body>
@@ -184,64 +128,46 @@ Cheater!
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-
-      // --- ASCII-Canvas & Maske (1:1 Kopie aus Impressum.html Script Block) ---
-      // Dieser Code-Block wurde komplett aus dem <script> Bereich der Impressum.html übernommen.
+      // ASCII-Canvas & Maske
       const canvas = document.getElementById('ascii-canvas'), ctx = canvas.getContext('2d');
       let w, h, cols, rows, time = 0;
       const fontSize = 12, charsSet = ' .:-=+*#%@';
       const maskGif = new Image();
-      // WICHTIG: Stellen Sie sicher, dass diese Bilddatei existiert und der Pfad korrekt ist!
-      // Wenn Sie keine Maske verwenden möchten, können Sie die Zeilen mit 'maskGif' und 'ctx.drawImage' entfernen/auskommentieren.
-      maskGif.src = 'images/mask.gif'; // Beispielpfad, bitte anpassen! Ggf. entfernen, wenn nicht benötigt.
-
+      maskGif.src = 'images/mask.gif';
       function resizeC() {
-          w = canvas.width = window.innerWidth;
-          h = canvas.height = window.innerHeight;
-          cols = Math.ceil(w / fontSize);
-          rows = Math.ceil(h / fontSize);
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        cols = Math.ceil(w / fontSize);
+        rows = Math.ceil(h / fontSize);
       }
       window.addEventListener('resize', resizeC);
       resizeC();
-
-      // Beachte: Die Funktion heißt hier 'draw' wie im ursprünglichen Impressum-Code
       function draw() {
-          ctx.clearRect(0, 0, w, h);
-          ctx.fillStyle = 'rgba(0,255,200,0.1)'; // Farbe der ASCII-Zeichen
-          ctx.font = `${fontSize}px monospace`;
-          for (let y = 0; y < rows; y++) {
-              const offs = Math.sin(y * 0.2 + time) * 20;
-              for (let x = 0; x < cols; x++) {
-                  ctx.fillText(charsSet.charAt(Math.floor(Math.random() * charsSet.length)), x * fontSize + offs, y * fontSize + fontSize);
-              }
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(0,255,200,0.1)';
+        ctx.font = `${fontSize}px monospace`;
+        for (let y = 0; y < rows; y++) {
+          const offs = Math.sin(y * 0.2 + time) * 20;
+          for (let x = 0; x < cols; x++) {
+            ctx.fillText(charsSet.charAt(Math.floor(Math.random() * charsSet.length)), x * fontSize + offs, y * fontSize + fontSize);
           }
-          // Maske nur anwenden, wenn das Bild geladen und vollständig ist
-          if (maskGif.complete && maskGif.naturalWidth !== 0) {
-              ctx.globalCompositeOperation = 'destination-in';
-              ctx.drawImage(maskGif, 0, 0, w, h);
-              ctx.globalCompositeOperation = 'source-over';
-          }
-          time += 0.01;
-          requestAnimationFrame(draw); // Rufe 'draw' rekursiv auf
+        }
+        if (maskGif.complete && maskGif.naturalWidth !== 0) {
+          ctx.globalCompositeOperation = 'destination-in';
+          ctx.drawImage(maskGif, 0, 0, w, h);
+          ctx.globalCompositeOperation = 'source-over';
+        }
+        time += 0.01;
+        requestAnimationFrame(draw);
       }
-
-      // Startet das Zeichnen, sobald das Maskenbild geladen ist (oder sofort, wenn es gecached ist)
-      // Wenn Sie maskGif.src auskommentiert haben, rufen Sie draw() direkt auf.
-      if (maskGif.src.endsWith('undefined') || !maskGif.src.includes("images/mask.gif")) { // Fallback wenn maskGif.src leer oder nicht gesetzt
-          draw();
-      } else if (maskGif.complete) {
-          draw();
+      if (maskGif.complete) {
+        draw();
       } else {
-          maskGif.onload = draw;
-          maskGif.onerror = () => {
-              console.error("Maskenbild konnte nicht geladen werden oder ist nicht vorhanden. ASCII-Effekt wird ohne Maske gezeichnet.");
-              draw(); // Zeichne trotzdem, aber ohne Maske
-          }
+        maskGif.onload = draw;
+        maskGif.onerror = () => { console.error("Maskenbild konnte nicht geladen werden."); draw(); };
       }
-      // --- Ende ASCII-Canvas & Masken Logik ---
 
-
-      // --- Quiz-Logik (Original aus index.html) ---
+      // Quiz-Logik
       const imageConfig = [
         {filename:'images00001.jpg',answer:'monster',name:'Loyax',url:'https://powerrangers.fandom.com/wiki/Loyax'},
         {filename:'images00002.jpg',answer:'monster',name:'Mad Mike',url:'https://powerrangers.fandom.com/wiki/Mad_Mike_the_Pizza_Chef'},
@@ -258,94 +184,81 @@ Cheater!
         {filename:'images00013.jpg',answer:'monster',name:'Ringbah',url:'https://powerrangers.fandom.com/wiki/Ringbah'},
         {filename:'images00014.jpg',answer:'monster',name:'Skelekron',url:'https://powerrangers.fandom.com/wiki/Skelekron'},
         {filename:'images00015.jpg',answer:'monster',name:'Turkey Jerk',url:'https://powerrangers.fandom.com/wiki/Turkey_Jerk'},
-        {filename:'images00016.jpg',answer:'ai'},{filename:'images00017.jpg',answer:'ai'},
-        {filename:'images00019.jpg',answer:'ai'},{filename:'images00020.jpg',answer:'ai'},{filename:'images00021.jpg',answer:'ai'},
-        {filename:'images00022.jpg',answer:'ai'},{filename:'images00023.jpg',answer:'ai'},{filename:'images00024.jpg',answer:'ai'},
-        {filename:'images00025.jpg',answer:'ai'},{filename:'images00026.jpg',answer:'ai'},{filename:'images00027.jpg',answer:'ai'},
-        {filename:'images00037.jpg',answer:'ai'},{filename:'images00038.jpg',answer:'ai'},{filename:'images00039.jpg',answer:'ai'},
-        {filename:'images00040.jpg',answer:'ai'},{filename:'images00041.jpg',answer:'ai'},{filename:'images00042.jpg',answer:'ai'},
-        {filename:'images00043.jpg',answer:'ai'},{filename:'images00044.jpg',answer:'ai'},{filename:'images00045.jpg',answer:'ai'},
-        {filename:'images00046.jpg',answer:'ai'},{filename:'images00047.jpg',answer:'ai'},
+        {filename:'images00016.jpg',answer:'ai'},
+        {filename:'images00017.jpg',answer:'ai'},
+        {filename:'images00019.jpg',answer:'ai'},
+        {filename:'images00020.jpg',answer:'ai'},
+        {filename:'images00021.jpg',answer:'ai'},
+        {filename:'images00022.jpg',answer:'ai'},
+        {filename:'images00023.jpg',answer:'ai'},
+        {filename:'images00024.jpg',answer:'ai'},
+        {filename:'images00025.jpg',answer:'ai'},
+        {filename:'images00026.jpg',answer:'ai'},
+        {filename:'images00027.jpg',answer:'ai'},
+        {filename:'images00037.jpg',answer:'ai'},
+        {filename:'images00038.jpg',answer:'ai'},
+        {filename:'images00039.jpg',answer:'ai'},
+        {filename:'images00040.jpg',answer:'ai'},
+        {filename:'images00041.jpg',answer:'ai'},
+        {filename:'images00042.jpg',answer:'ai'},
+        {filename:'images00043.jpg',answer:'ai'},
+        {filename:'images00044.jpg',answer:'ai'},
+        {filename:'images00045.jpg',answer:'ai'},
+        {filename:'images00046.jpg',answer:'ai'},
+        {filename:'images00047.jpg',answer:'ai'},
         {filename:'images00028.jpg',answer:'monster',name:'Hate Master',url:'https://powerrangers.fandom.com/wiki/Hate_Master'},
         {filename:'images00029.jpg',answer:'monster',name:'Bratboy',url:'https://powerrangers.fandom.com/wiki/Farkas_Bulkmeier'},
         {filename:'images00030.jpg',answer:'monster',name:'Debo Kokodoko',url:'https://powerrangers.fandom.com/wiki/Debo_Kokodoko'}
       ];
-
       const aiPool = imageConfig.filter(c => c.answer === 'ai');
       const moPool = imageConfig.filter(c => c.answer === 'monster');
-
       const totalQuestions = 20;
-      const minAIRatio = 0.3;
-      const maxAIRatio = 0.70;
-      const aiCount = Math.floor(Math.random() * (Math.floor(maxAIRatio * totalQuestions) - Math.ceil(minAIRatio * totalQuestions) + 1)) + Math.ceil(minAIRatio * totalQuestions);
+      const minAIRatio = 0.3, maxAIRatio = 0.7;
+      const aiCount = Math.floor(Math.random() * (Math.floor(maxAIRatio * totalQuestions) - Math.ceil(minAIRatio * totalQuestions) + 1))
+                        + Math.ceil(minAIRatio * totalQuestions);
       const moCount = totalQuestions - aiCount;
-
-      function shuffleArray(array) {
-          for (let i = array.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [array[i], array[j]] = [array[j], array[i]];
-          }
-          return array;
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
       }
-
       let tempAiSelected = shuffleArray([...aiPool]).slice(0, aiCount);
       let tempMoSelected = shuffleArray([...moPool]).slice(0, moCount);
-
-      let generatedSequence = [];
-      let lastAnswerType = null;
-      let currentRun = 0;
+      let generatedSequence = [], lastAnswerType = null, currentRun = 0;
       const MAX_CONSECUTIVE_RUN = 4;
-
       for (let i = 0; i < totalQuestions; i++) {
-          let choiceIsAi;
-          const canPickAi = tempAiSelected.length > 0;
-          const canPickMo = tempMoSelected.length > 0;
-
-          if (!canPickAi && !canPickMo) {
-              console.error("Sequenzerstellung: Beide Pools sind leer, bevor alle Fragen generiert wurden. Index:", i);
-              break;
+        let choiceIsAi;
+        const canPickAi = tempAiSelected.length > 0;
+        const canPickMo = tempMoSelected.length > 0;
+        if (currentRun >= MAX_CONSECUTIVE_RUN) {
+          choiceIsAi = lastAnswerType === 'monster';
+          if ((choiceIsAi && !canPickAi) || (!choiceIsAi && !canPickMo)) {
+            choiceIsAi = !choiceIsAi;
           }
-
-          if (currentRun >= MAX_CONSECUTIVE_RUN) {
-              choiceIsAi = (lastAnswerType === 'monster'); // Erzwinge Wechsel
-              if ((choiceIsAi && !canPickAi) || (!choiceIsAi && !canPickMo)) { // Wenn erzwungene Wahl nicht möglich
-                  choiceIsAi = !choiceIsAi; // Nimm den anderen Typ (wenn möglich)
-              }
-          } else {
-              if (!canPickAi) choiceIsAi = false;
-              else if (!canPickMo) choiceIsAi = true;
-              else choiceIsAi = Math.random() < (tempAiSelected.length / (tempAiSelected.length + tempMoSelected.length)); // Gewichteter Zufall
-          }
-
-          let currentItem;
-          if (choiceIsAi) {
-              if (canPickAi) currentItem = tempAiSelected.pop();
-              else currentItem = tempMoSelected.pop(); // Fallback, wenn AI gewählt, aber leer
-          } else {
-              if (canPickMo) currentItem = tempMoSelected.pop();
-              else currentItem = tempAiSelected.pop(); // Fallback, wenn Monster gewählt, aber leer
-          }
-
-          if (!currentItem) {
-              console.error(`Sequenzerstellung: Konnte kein Item für Frage ${i+1} auswählen.`);
-              break;
-          }
-          generatedSequence.push(currentItem);
-
-          if (currentItem.answer === lastAnswerType) currentRun++;
-          else { lastAnswerType = currentItem.answer; currentRun = 1; }
+        } else {
+          if (!canPickAi) choiceIsAi = false;
+          else if (!canPickMo) choiceIsAi = true;
+          else choiceIsAi = Math.random() < (tempAiSelected.length / (tempAiSelected.length + tempMoSelected.length));
+        }
+        let item = choiceIsAi
+          ? (canPickAi ? tempAiSelected.pop() : tempMoSelected.pop())
+          : (canPickMo ? tempMoSelected.pop() : tempAiSelected.pop());
+        generatedSequence.push(item);
+        if (item.answer === lastAnswerType) currentRun++;
+        else { lastAnswerType = item.answer; currentRun = 1; }
       }
-
       const quizDataFinal = generatedSequence;
-      const quizContainerEl = document.getElementById('quiz-container');
-
       if (quizDataFinal.length !== totalQuestions) {
-          quizContainerEl.innerHTML = `<h1>Fehler</h1><p>Das Quiz konnte nicht korrekt initialisiert werden (nur ${quizDataFinal.length}/${totalQuestions} Fragen). Bitte laden Sie die Seite neu.</p><button onclick="location.reload()">Neu laden</button>`;
-          return; // Stoppt weitere Ausführung
+        document.getElementById('quiz-container').innerHTML = `
+          <h1>Fehler</h1>
+          <p>Das Quiz konnte nicht korrekt initialisiert werden (${quizDataFinal.length}/${totalQuestions} Fragen).</p>
+          <button onclick="location.reload()">Neu laden</button>`;
+        return;
       }
 
-
-      // Quiz-Logik Fortsetzung
+      // Elemente
       let currentQuestionIndex = 0, score = 0;
       const imgEl = document.getElementById('question-image'),
             scoreEl = document.getElementById('score-value'),
@@ -356,102 +269,79 @@ Cheater!
             nextBtn = document.getElementById('next-btn'),
             restartBtn = document.getElementById('restart-btn'),
             buttonsDiv = document.getElementById('buttons');
-
       const endMessages = [
-          /* 0  */ "Oje, kein Treffer. Aber hey, Übung macht den Meister!",
-          /* 1  */ "Ein Punkt ist ein Anfang! Probier's gleich nochmal.",
-          /* 2  */ "Nicht schlecht! Du hast ein paar erkannt.",
-          /* 3  */ "Nicht schlecht! Du hast ein paar erkannt.",
-          /* 4  */ "Nicht schlecht! Du hast ein paar erkannt.",
-          /* 5  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
-          /* 6  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
-          /* 7  */ "Schon besser! Langsam entwickelst du ein Auge dafür.",
-          /* 8  */ "Auf einem guten Weg. Weiter so.",
-          /* 9  */ "Auf einem guten Weg. Weiter so.",
-          /* 10 */ "Auf einem guten Weg. Weiter so.",
-          /* 11 */ "Auf einem guten Weg. Weiter so.",
-          /* 12 */ "Auf einem guten Weg. Weiter so.",
-          /* 13 */ "Auf einem guten Weg. Weiter so.",
-          /* 14 */ "Du bist auf dem besten Weg zum AI-Detektiv.",
-          /* 15 */ "Du bist auf dem besten Weg zum AI-Detektiv.",
-          /* 16 */ "Unglaublich! Du bist ein AI-Spürhund!",
-          /* 17 */ "Unglaublich! Du bist ein AI-Spürhund!",
-          /* 18 */ "Meisterhaft! Ist da etwa eine echte AI am Werk?",
-          /* 19 */ "Fast Perfektion! Du hast sie fast alle entlarvt!",
-          /* 20 */ "Absolute Perfektion! Unmenschlich gut! Bist du sicher, dass du keine AI bist?"
+        "Oje, kein Treffer. Aber hey, Übung macht den Meister!",
+        "Ein Punkt ist ein Anfang! Probier's gleich nochmal.",
+        "Nicht schlecht! Du hast ein paar erkannt.",
+        "Nicht schlecht! Du hast ein paar erkannt.",
+        "Nicht schlecht! Du hast ein paar erkannt.",
+        "Schon besser! Langsam entwickelst du ein Auge dafür.",
+        "Schon besser! Langsam entwickelst du ein Auge dafür.",
+        "Schon besser! Langsam entwickelst du ein Auge dafür.",
+        "Auf einem guten Weg. Weiter so.",
+        "Auf einem guten Weg. Weiter so.",
+        "Auf einem guten Weg. Weiter so.",
+        "Auf einem guten Weg. Weiter so.",
+        "Auf einem guten Weg. Weiter so.",
+        "Auf einem guten Weg. Weiter so.",
+        "Du bist auf dem besten Weg zum AI-Detektiv.",
+        "Du bist auf dem besten Weg zum AI-Detektiv.",
+        "Unglaublich! Du bist ein AI-Spürhund!",
+        "Unglaublich! Du bist ein AI-Spürhund!",
+        "Meisterhaft! Ist da etwa eine echte AI am Werk?",
+        "Fast Perfektion! Du hast sie fast alle entlarvt!",
+        "Absolute Perfektion! Unmenschlich gut! Bist du sicher, dass du keine AI bist?"
       ];
 
       function showQuestion() {
         if (currentQuestionIndex >= quizDataFinal.length) {
-            endQuiz();
-            return;
+          endQuiz();
+          return;
         }
-        const currentQuizItem = quizDataFinal[currentQuestionIndex];
-        if (!currentQuizItem || !currentQuizItem.filename) {
-            console.error("Ungültiges Quiz-Item bei Index:", currentQuestionIndex, currentQuizItem);
-            infoEl.textContent = "Fehler: Frage konnte nicht geladen werden.";
-            endQuiz("Fehler beim Laden der Frage."); // Quiz mit Fehlermeldung beenden
-            return;
-        }
-
+        const item = quizDataFinal[currentQuestionIndex];
         imgEl.style.display = 'block';
-        imgEl.src = `images/${currentQuizItem.filename}`;
+        imgEl.src = `images/${item.filename}`;
         imgEl.onerror = () => {
-            console.error(`Bild konnte nicht geladen werden: images/${currentQuizItem.filename}`);
-            infoEl.textContent = `Fehler: Bild "${currentQuizItem.filename}" konnte nicht geladen werden. Frage wird übersprungen.`;
-            imgEl.style.display = 'none'; // Bild ausblenden bei Fehler
-            aiBtn.disabled = true;
-            moBtn.disabled = true;
-            nextBtn.style.display = 'inline-block'; // "Nächstes" anzeigen, um fortzufahren
-            if (currentQuestionIndex >= quizDataFinal.length - 1) {
-                 nextBtn.textContent = "Ergebnis anzeigen"; // Wenn es die letzte Frage war
-            }
+          infoEl.textContent = `Fehler: Bild "${item.filename}" konnte nicht geladen werden. Frage wird übersprungen.`;
+          imgEl.style.display = 'none';
+          aiBtn.disabled = moBtn.disabled = true;
+          nextBtn.style.display = 'inline-block';
+          if (currentQuestionIndex >= totalQuestions - 1) nextBtn.textContent = "Ergebnis anzeigen";
         };
         imgEl.onload = () => {
-            aiBtn.disabled = false; moBtn.disabled = false;
-        }
-
+          aiBtn.disabled = moBtn.disabled = false;
+        };
         qNumEl.textContent = `Frage ${currentQuestionIndex + 1} von ${totalQuestions}`;
-        if (imgEl.style.display !== 'none') { // Buttons nur aktivieren, wenn Bild (potenziell) geladen wird
-            aiBtn.disabled = false; moBtn.disabled = false;
-        }
-        aiBtn.style.display = 'inline-block'; moBtn.style.display = 'inline-block';
         buttonsDiv.style.display = 'block';
-        infoEl.textContent = '';
         nextBtn.style.display = 'none';
-        nextBtn.textContent = "Nächstes"; // Zurücksetzen, falls es "Ergebnis anzeigen" war
         restartBtn.style.display = 'none';
         scoreEl.textContent = score;
+        infoEl.textContent = '';
       }
 
       function handleAnswer(choice) {
-        aiBtn.disabled = true; moBtn.disabled = true;
-        const currentQuizItem = quizDataFinal[currentQuestionIndex];
-        let isCorrect = false;
-
-        if (choice === 'ai' && currentQuizItem.answer === 'ai') isCorrect = true;
-        else if (choice === 'monster' && currentQuizItem.answer === 'monster') isCorrect = true;
-
+        aiBtn.disabled = moBtn.disabled = true;
+        const item = quizDataFinal[currentQuestionIndex];
+        const isCorrect = choice === item.answer;
         if (isCorrect) {
-          score++;
-          scoreEl.textContent = score;
+          score++; scoreEl.textContent = score;
           infoEl.textContent = 'Richtig! ';
-          if(currentQuizItem.answer === 'monster' && currentQuizItem.name && currentQuizItem.url) {
-              infoEl.innerHTML += `NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizItem.name}</a>`;
+          if (item.answer === 'monster' && item.name && item.url) {
+            infoEl.innerHTML += `NOT AI: <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a>`;
           } else {
-              infoEl.textContent += (currentQuizItem.answer === 'ai' ? 'AI.' : 'NOT AI.');
+            infoEl.textContent += (item.answer === 'ai' ? 'AI.' : 'NOT AI.');
           }
         } else {
           infoEl.textContent = 'Falsch! ';
-            if(currentQuizItem.answer === 'monster' && currentQuizItem.name && currentQuizItem.url) {
-              infoEl.innerHTML += `Es war NOT AI: <a href="${currentQuizItem.url}" target="_blank" rel="noopener noreferrer">${currentQuizitem.name}</a>`;
+          if (item.answer === 'monster' && item.name && item.url) {
+            infoEl.innerHTML += `Es war NOT AI: <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a>`;
           } else {
-              infoEl.textContent += (currentQuizItem.answer === 'ai' ? 'Es war AI.' : 'Es war NOT AI.');
+            infoEl.textContent += (item.answer === 'ai' ? 'Es war AI.' : 'Es war NOT AI.');
           }
         }
         nextBtn.style.display = 'inline-block';
-        if (currentQuestionIndex >= quizDataFinal.length - 1) { // Letzte Frage beantwortet
-             nextBtn.textContent = "Ergebnis anzeigen";
+        if (currentQuestionIndex >= totalQuestions - 1) {
+          nextBtn.textContent = 'Ergebnis anzeigen';
         }
       }
 
@@ -467,17 +357,13 @@ Cheater!
         }
       });
 
-      function endQuiz(customMessage = "") {
+      function endQuiz() {
         buttonsDiv.style.display = 'none';
         nextBtn.style.display = 'none';
         imgEl.style.display = 'none';
-        qNumEl.textContent = "Quiz beendet!";
-
-        // Sicherstellen, dass eine gültige Nachricht für den Punktestand vorhanden ist
-        const scoreMessage = endMessages[score] !== undefined ? endMessages[score] : (endMessages[endMessages.length -1] || "Gut gemacht!");
-
-        const finalMessage = customMessage || `${score} / ${totalQuestions} richtig – ${scoreMessage}`;
-        infoEl.textContent = finalMessage;
+        qNumEl.textContent = 'Quiz beendet!';
+        const msg = endMessages[score] || endMessages[endMessages.length - 1];
+        infoEl.textContent = `${score} / ${totalQuestions} richtig – ${msg}`;
         restartBtn.style.display = 'inline-block';
       }
 
@@ -485,9 +371,8 @@ Cheater!
 
       // Quiz starten
       showQuestion();
-      // --- Ende Quiz-Logik ---
-
     });
   </script>
 </body>
 </html>
+
